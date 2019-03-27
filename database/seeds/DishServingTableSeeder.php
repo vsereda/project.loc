@@ -29,7 +29,7 @@ class DishServingTableSeeder extends Seeder
 
     protected function attachDishes(Serving $serving, Collection $dishes): void
     {
-        foreach($dishes as $dish) {
+        foreach ($dishes as $dish) {
             DB::table('dish_serving')->insert([
                 'dish_id' => $dish->id,
                 'serving_id' => $serving->id,
