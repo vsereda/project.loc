@@ -1,7 +1,8 @@
 {{-- if user belongs to the kitchen --}}
-@if(true)
+@role('kitchener')
+    @include('kitchen.order_edit')
     @include('kitchen.orders')
-@endif
+@endrole
 
 @extends('layouts.app')
 
@@ -10,18 +11,30 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Dashboard</div>
+                    <div class="panel-heading">
+                        @isset($page_title)
+                            {{ $page_title }}
+                        @else
+                            Page title
+                        @endisset
+                    </div>
 
                     <div class="panel-body">
+
                         @if (session('status'))
                             <div class="alert alert-success">
                                 {{ session('status') }}
                             </div>
                         @endif
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
 
-                        You are logged in! (home.blade)
 
-                        @yield('dashboard_content')
+                        @yield('kitchen_orders')
+                        @yield('kitchen_order_edit')
 
 
                     </div>

@@ -16,5 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call(DishServingTableSeeder::class);
         $this->call(AddressesTableSeeder::class);
         $this->call(OrderDishServingTableSeeder::class);
+
+        // Laratrust
+        $this->call(LaratrustSeeder::class);
     }
 }

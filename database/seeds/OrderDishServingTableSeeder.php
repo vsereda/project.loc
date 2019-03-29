@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 class OrderDishServingTableSeeder extends Seeder
 {
     // Order count and dishServing count for each Order
-    const ORDERS = 60;
+    const ORDERS = 120;
     const DISHSERVINGS = 24;
 
     // Those variables are using for DishServings cache
