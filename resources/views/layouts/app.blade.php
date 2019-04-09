@@ -41,10 +41,20 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
+
+                        <!-- Shoping Basket -->
+                        @if(isset($basket) && $basket)
+                            <li>
+                                <a href="{{ route('items.index') }}">
+                                    Корзина: {{ $basket }} шт.
+                                </a>
+                            </li>
+                        @endif
+
+                    <!-- Authentication Links -->
                         @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
+                            <li><a href="{{ route('login') }}">Войти</a></li>
+                            <li><a href="{{ route('register') }}">Зарегистрироваться</a></li>
                         @else
                             @include('layouts.top_menu')
 

@@ -14,15 +14,23 @@
 //Route::get('/', function () {
 //    return view('welcome');
 //});
-
-Route::get('/test', 'TestController@test');
+Route::get('/home', function (){
+    return 'HOME!!!';
+});
+Route::get('/test1', 'TestController@test1');
+Route::get('/test2', 'TestController@test2');
 Auth::routes();
 
 Route::get('/', 'Home_Controller@index')->name('home');
+Route::resource('products', 'ProductController');
+
+Route::resource('items', 'BasketController');
+Route::resource('orders', 'OrderController');
+
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::resource('orders', 'OrderController');
+    Route::resource('addresses', 'AddressesController');
 
 //    Route::group([
 //        'prefix' => 'kitchen',

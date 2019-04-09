@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    protected $fillable = ['address_id', 'dinner_time', 'status'];
+
     public function address()
     {
         return $this->belongsTo('App\Address');

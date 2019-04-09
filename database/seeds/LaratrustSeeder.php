@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -64,6 +65,9 @@ class LaratrustSeeder extends Seeder
             ]);
 
             $user->attachRole($role);
+
+            // Attach addresses to user
+            $this->attachAdresses($user, 3);
         }
 
         // Creating user with permissions
@@ -81,6 +85,10 @@ class LaratrustSeeder extends Seeder
                         'phone' => rand(1000000000, 4000000000),
                         'remember_token' => str_random(10),
                     ]);
+
+                    // Attach addresses to user
+                    $this->attachAdresses($user, 3);
+
                     $permissions = [];
 
                     foreach (explode(',', $value) as $p => $perm) {
@@ -120,6 +128,19 @@ class LaratrustSeeder extends Seeder
         \App\Role::truncate();
         \App\Permission::truncate();
         Schema::enableForeignKeyConstraints();
+    }
+
+    /**
+     * @param User $user
+     * @param int $count
+     *
+     * Copyed from AddressTableSeeder
+     */
+    protected function attachAdresses(User $user, int $count): void
+    {
+        for ($i = 0; $i < $count; $i++) {
+            $user->addresses()->save(factory(App\Address::class)->make());
+        }
     }
 }
 

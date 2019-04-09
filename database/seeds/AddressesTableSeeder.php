@@ -17,6 +17,12 @@ class AddressesTableSeeder extends Seeder
         });
     }
 
+    /**
+     * @param User $user
+     * @param int $count
+     *
+     * Copyed to LaratrustSeeder
+     */
     protected function attachAdresses(User $user, int $count): void
     {
         for ($i = 0; $i < $count; $i++) {

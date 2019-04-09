@@ -8,6 +8,7 @@ class Address extends Model
 {
     //
     protected $table = 'addresses';
+    protected $fillable = ['description', 'user_id',];
 
     public function user()
     {

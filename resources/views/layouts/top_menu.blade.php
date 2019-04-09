@@ -26,3 +26,16 @@
 {{--    </a>--}}
 {{--</li>--}}
 @endrole
+
+@role('user')
+<li>
+    <a href="{{ route('orders.index') }}">
+        Заказы
+    </a>
+</li>
+<li>
+    <a href="{{ route('products.index') }}">
+        Меню
+    </a>
+</li>
+@endrole

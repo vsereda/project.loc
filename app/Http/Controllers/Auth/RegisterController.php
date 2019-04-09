@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -27,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -37,12 +38,15 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+//        $this->redirectTo = url()->previous();
+//        $this->redirectTo = url()->previous();
+//        $this->redirectTo = back();
     }
 
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -51,21 +55,38 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'phone' => 'required|unique:users|digits:10',
         ]);
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \App\User
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
+            'password' => $data['password'],
             'password' => bcrypt($data['password']),
         ]);
+        $user->attachRole('user');
+        return $user;
+    }
+
+    /**
+     * Redirect users back after registration.
+     */
+    protected function redirectTo()
+    {
+        if (session()->get('order_back_url')) {
+            return session()->pull('order_back_url');
+        }
+        return $this->redirectTo;
+//        return '/zalupa';
     }
 }

@@ -1,7 +1,15 @@
 {{-- if user belongs to the kitchen --}}
-@role('kitchener')
+
+@include('products')
+@include('basket_content')
+
+@role('kitchener|user')
     @include('kitchen.order_edit')
     @include('kitchen.orders')
+@endrole
+
+@role('user')
+    @include('user.orders')
 @endrole
 
 @extends('layouts.app')
@@ -35,6 +43,9 @@
 
                         @yield('kitchen_orders')
                         @yield('kitchen_order_edit')
+                        @yield('products')
+                        @yield('basket_content')
+                        @yield('order_content')
 
 
                     </div>

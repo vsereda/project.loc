@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a940ab5cbd43a46316d19835a61cab2b",
+    "content-hash": "358c925d05b1a6beab464a9b7b40f732",
     "packages": [
         {
             "name": "awobaz/compoships",
@@ -69,6 +69,101 @@
                 "laravel relationships"
             ],
             "time": "2019-03-12T20:30:51+00:00"
+        },
+        {
+            "name": "coenjacobs/eloquent-composite-primary-keys",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/coenjacobs/eloquent-composite-primary-keys.git",
+                "reference": "62d0cc1107cf3f91e4890f65d2bc08c13a3195f8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/coenjacobs/eloquent-composite-primary-keys/zipball/62d0cc1107cf3f91e4890f65d2bc08c13a3195f8",
+                "reference": "62d0cc1107cf3f91e4890f65d2bc08c13a3195f8",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CoenJacobs\\EloquentCompositePrimaryKeys\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Coen Jacobs",
+                    "email": "coenjacobs@gmail.com"
+                }
+            ],
+            "description": "Offers composite primary keys on Eloquent models",
+            "time": "2017-10-23T09:10:24+00:00"
+        },
+        {
+            "name": "darryldecode/cart",
+            "version": "4.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/darryldecode/laravelshoppingcart.git",
+                "reference": "6b172fa2852b2e85307160743f9310b76d97710b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/darryldecode/laravelshoppingcart/zipball/6b172fa2852b2e85307160743f9310b76d97710b",
+                "reference": "6b172fa2852b2e85307160743f9310b76d97710b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*",
+                "illuminate/translation": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*",
+                "illuminate/validation": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^5.0",
+                "symfony/var-dumper": "2.7.*@dev"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Darryldecode\\Cart\\CartServiceProvider"
+                    ],
+                    "aliases": {
+                        "Cart": "Darryldecode\\Cart\\Facades\\CartFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Darryldecode\\": "src/Darryldecode"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Darryl Fernandez",
+                    "email": "engrdarrylfernandez@gmail.com"
+                }
+            ],
+            "description": "Laravel 5 Shopping cart",
+            "keywords": [
+                "cart",
+                "laravel",
+                "shopping cart"
+            ],
+            "time": "2019-03-03T14:08:24+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
