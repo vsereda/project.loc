@@ -43,6 +43,5 @@ class LoginController extends Controller
             return session()->pull('order_back_url');
         }
         return $this->redirectTo;
-//        return '/zalupa';
     }
 }

@@ -14,18 +14,18 @@
 //Route::get('/', function () {
 //    return view('welcome');
 //});
-Route::get('/home', function (){
-    return 'HOME!!!';
-});
+
 Route::get('/test1', 'TestController@test1');
 Route::get('/test2', 'TestController@test2');
 Auth::routes();
 
 Route::get('/', 'Home_Controller@index')->name('home');
-Route::resource('products', 'ProductController');
+Route::get('/home', 'Home_Controller@index');
 
+Route::resource('products', 'ProductController');
 Route::resource('items', 'BasketController');
 
+Route::get('orders/tasks', 'OrderController@tasks')->middleware(['role:kitchener'])->name('order.tasks');
 Route::resource('orders', 'OrderController');
 
 

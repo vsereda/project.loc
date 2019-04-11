@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\DishServing;
+use App\Http\Middleware\ProductsMiddleware;
 use Illuminate\Http\Request;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 
 class BasketController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(ProductsMiddleware::class);
+    }
     /**
      * Display a listing of the resource.
      *

@@ -6,9 +6,15 @@ use App\Dish;
 use App\DishServing;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Http\Request;
+use App\Http\Middleware\ProductsMiddleware;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(ProductsMiddleware::class);
+    }
+
     /**
      * Display a listing of the resource.
      *

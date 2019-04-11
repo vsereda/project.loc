@@ -75,9 +75,9 @@
                                         {{ method_field('PUT') }}
                                         <input type="hidden" name="status" value="2">
                                         @editable_order($order)
-                                        <button type="submit" class="btn btn-default">Приготовлен</button>
+                                        <button type="submit" class="btn btn-danger">Приготовлен</button>
                                         @else
-                                            <button type="submit" class="btn btn-default" disabled>Приготовлен</button>
+                                            <button type="submit" class="btn btn-danger" disabled>Приготовлен</button>
                                         @endeditable_order
                                     </form>
                                 @elseif(2 == $order->status)
@@ -104,17 +104,151 @@
     </table>
         {{ $kitchen_orders->links() }}
     @endif
-    @isset($kitchenTaskList)
+
+    @isset($kitchenTaskList1)
         <table class="table">
-            <caption><h4>Список что нужно приговтовить: </h4></caption>
+            <caption><h4>Нужно приговтовить к 1-му обеду: </h4></caption>
             <thead>
             <tr>
                 <th scope="col">
                     Название
                 </th>
-                    <th scope="col">
-                        Всего
+                <th scope="col">
+                    Всего
+                </th>
+                <th scope="col">
+                    Порция
+                </th>
+                <th scope="col">
+                    Количество
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($kitchenTaskList1 as $dish => $dishCollection)
+                <tr>
+                    <th rowspan="{{ $dishCollection->count() }}">
+                        {{ $dish }}
                     </th>
+                    <td rowspan="{{ $dishCollection->count() }}">
+                        {{
+                            number_format($dishCollection->map(function ($item, $key){
+                                return preg_replace("/[^0-9]/", '', $key) * $item;
+                            })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
+                        }}
+                    </td>
+                    @foreach($dishCollection as $key => $dishCount)
+                        <td>
+                            {{ $key }}
+                        </td>
+                        <td>
+                            {{ $dishCount }}
+                        </td>
+                </tr>
+            @endforeach
+            @endforeach
+            </tbody>
+    @endisset
+    @isset($kitchenTaskList2)
+        <table class="table">
+            <caption><h4>Нужно приговтовить ко 2-му обеду: </h4></caption>
+            <thead>
+            <tr>
+                <th scope="col">
+                    Название
+                </th>
+                <th scope="col">
+                    Всего
+                </th>
+                <th scope="col">
+                    Порция
+                </th>
+                <th scope="col">
+                    Количество
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($kitchenTaskList2 as $dish => $dishCollection)
+                <tr>
+                    <th rowspan="{{ $dishCollection->count() }}">
+                        {{ $dish }}
+                    </th>
+                    <td rowspan="{{ $dishCollection->count() }}">
+                        {{
+                            number_format($dishCollection->map(function ($item, $key){
+                                return preg_replace("/[^0-9]/", '', $key) * $item;
+                            })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
+                        }}
+                    </td>
+                    @foreach($dishCollection as $key => $dishCount)
+                        <td>
+                            {{ $key }}
+                        </td>
+                        <td>
+                            {{ $dishCount }}
+                        </td>
+                </tr>
+            @endforeach
+            @endforeach
+            </tbody>
+    @endisset
+    @isset($kitchenTaskList3)
+        <table class="table">
+            <caption><h4>Нужно приговтовить к 3-му обеду: </h4></caption>
+            <thead>
+            <tr>
+                <th scope="col">
+                    Название
+                </th>
+                <th scope="col">
+                    Всего
+                </th>
+                <th scope="col">
+                    Порция
+                </th>
+                <th scope="col">
+                    Количество
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($kitchenTaskList3 as $dish => $dishCollection)
+                <tr>
+                    <th rowspan="{{ $dishCollection->count() }}">
+                        {{ $dish }}
+                    </th>
+                    <td rowspan="{{ $dishCollection->count() }}">
+                        {{
+                            number_format($dishCollection->map(function ($item, $key){
+                                return preg_replace("/[^0-9]/", '', $key) * $item;
+                            })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
+                        }}
+                    </td>
+                    @foreach($dishCollection as $key => $dishCount)
+                        <td>
+                            {{ $key }}
+                        </td>
+                        <td>
+                            {{ $dishCount }}
+                        </td>
+                </tr>
+            @endforeach
+            @endforeach
+            </tbody>
+
+    @endisset
+    @isset($kitchenTaskList)
+        <table class="table">
+            <caption><h4>Нужно приговтовить на весь день: </h4></caption>
+            <thead>
+            <tr>
+                <th scope="col">
+                    Название
+                </th>
+                <th scope="col">
+                    Всего
+                </th>
                 <th scope="col">
                     Порция
                 </th>
@@ -133,7 +267,7 @@
                         {{
                             number_format($dishCollection->map(function ($item, $key){
                                 return preg_replace("/[^0-9]/", '', $key) * $item;
-                            })->sum(), 0, '`', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
+                            })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
                         }}
                     </td>
                     @foreach($dishCollection as $key => $dishCount)
@@ -144,17 +278,8 @@
                             {{ $dishCount }}
                         </td>
                 </tr>
-                    @endforeach
-
-
             @endforeach
-
+            @endforeach
             </tbody>
-
-
-        {{--                    <th scope="col">--}}
-        {{--                        Создан--}}
-        {{--                    </th>--}}
-
     @endisset
 @endsection

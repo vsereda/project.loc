@@ -13,11 +13,11 @@
 {{--</li >--}}
 @endrole
 @role('kitchener')
-{{--<li>--}}
-{{--    <a href="#">--}}
-{{--        Кухня--}}
-{{--    </a>--}}
-{{--</li >--}}
+<li>
+    <a href="{{ route('order.tasks') }}">
+        Задания
+    </a>
+</li >
 @endrole
 @role('courier')
 {{--<li>--}}
@@ -27,12 +27,14 @@
 {{--</li>--}}
 @endrole
 
-@role('user')
+@role('user|kitchener')
 <li>
     <a href="{{ route('orders.index') }}">
         Заказы
     </a>
 </li>
+@endrole
+@role('user')
 <li>
     <a href="{{ route('products.index') }}">
         Меню

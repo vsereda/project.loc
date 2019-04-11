@@ -11,6 +11,7 @@ use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Illuminate\View\View;
@@ -27,6 +28,22 @@ class OrderController extends Controller
         $this->middleware('auth');
     }
 
+    public function tasks()
+    {
+        $kitchenTaskList = $this->getKitchenTaskList();
+        $kitchenTaskList1 = $this->getKitchenTaskList(1);
+        $kitchenTaskList2 = $this->getKitchenTaskList(2);
+        $kitchenTaskList3 = $this->getKitchenTaskList(3);
+
+        return view('home')->with([
+            'page_title' => 'Задания',
+            'kitchenTaskList' => $kitchenTaskList,
+            'kitchenTaskList1' => $kitchenTaskList1,
+            'kitchenTaskList2' => $kitchenTaskList2,
+            'kitchenTaskList3' => $kitchenTaskList3,
+        ]);
+    }
+
     /**
      * Display listing of orders.
      *
@@ -36,18 +53,10 @@ class OrderController extends Controller
     {
         session()->forget('order_edit_back_url');
         if (Auth::user()->hasRole('user')) {
-            $kitchenTaskList = null;
+//            $kitchenTaskList = null;
             $ordersPaginated = $this->getUserOrders(self::PAGINATE, Auth::user());
             $pageTitle = 'Заказы';
         } elseif (Auth::user()->hasRole('kitchener')) {
-            $kitchenTaskList = $this->getKitchenTaskList();
-
-
-
-//            dd($kitchenTaskList);
-
-
-
             $ordersPaginated = $this->getKitchenerOrders(self::PAGINATE);
             $pageTitle = ($this->getDeadlineTime() > Carbon::now())
                 ? 'Заказы еще могут быть изменены или удалены клиентом'
@@ -58,7 +67,7 @@ class OrderController extends Controller
             'kitchen_orders' => $ordersPaginated,
             'page_title' => $pageTitle,
             'basket' => Cart::getTotalQuantity(),
-            'kitchenTaskList' => $kitchenTaskList,
+//            'kitchenTaskList' => $kitchenTaskList,
         ]);
     }
 
@@ -294,17 +303,19 @@ class OrderController extends Controller
         };
     }
 
-    protected function getNotMadeOrders()
+    protected function getNotMadeOrders(int $dinnerTime = 0)
     {
+        $dinnerTimeList = $dinnerTime ? [$dinnerTime] : [1, 2, 3];
         return Order::where('created_at', $this->getComparisonOperator(), $this->getDeadlineTime())
             ->whereIn('status', [1])
+            ->whereIn('dinner_time', $dinnerTimeList)
             ->with(['orderDishServings'])
             ->get();
     }
 
-    protected function getKitchenTaskList()
+    protected function getKitchenTaskList(int $dinnerTime = 0): Collection
     {
-        return $this->getNotMadeOrders()->map(function ($item) {
+        $x = $this->getNotMadeOrders($dinnerTime)->map(function ($item) {
             return $item->orderDishServings;
         })
             ->collapse()
@@ -319,5 +330,7 @@ class OrderController extends Controller
                     return $res3->sum('count');
                 });
             });
+//        dd(get_class($x));
+        return $x;
     }
 }
