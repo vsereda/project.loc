@@ -130,12 +130,18 @@
                 </div>
             @endrole
 
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary" form="edit_order">Сохранить</button>
-                <button type="button" class="btn btn-primary" onclick="location.href='{{ route('orders.index') }}'">
-                    К списку заказов
+            <div class="form-group btn-group">
+                <button type="submit" class="btn btn-default" form="edit_order">
+                    Сохранить
                 </button>
-                <button type="submit" class="btn btn-primary" form="delete_order">Удалить заказ</button>
+                <a class="btn btn-btn btn-default" href="{{ route('orders.index') }}">
+                    К списку заказов
+                </a>
+                @role('user')
+                    <button type="submit" class="btn btn-default" form="delete_order">
+                        Удалить заказ
+                    </button>
+                @endrole
             </div>
         </form>
         <form action="{{ route('orders.destroy', $order_edit->id) }}" id="delete_order" method="post">

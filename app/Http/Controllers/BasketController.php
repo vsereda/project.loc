@@ -15,6 +15,9 @@ class BasketController extends Controller
      */
     public function index()
     {
+        if(!Cart::getTotal()){
+            return redirect()->route('home');
+        }
         return view('home')->with([
             'page_title' => 'Корзина: всего ' . Cart::getTotal() . 'грн.',
             'basket_content' => Cart::getContent(),

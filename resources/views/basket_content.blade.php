@@ -13,19 +13,21 @@
                     <form action="{{ route('items.destroy', $basket_item->id) }}" method="post">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
-                        <button type="submit">
-                            Удалить
+                        <button type="submit" class="btn btn-default">
+                            Убрать из корзины
                         </button>
                     </form>
                 </div>
 
             </div>
         @endforeach
-        <button type="button" onclick="location.href='{{ route('orders.create') }}'">
-            Оформить заказ
-        </button>
-        <button type="button" onclick="location.href='{{ route('products.index') }}'">
-            Назад в меню
-        </button>
+        <div class="btn-group ">
+            <a class="btn btn-default" href="{{ route('orders.create') }}">
+                Оформить заказ
+            </a>
+            <a class="btn btn-default" href="{{ route('products.index') }}">
+                Вернуться в меню
+            </a>
+        </div>
     @endif
 @endsection

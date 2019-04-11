@@ -6,6 +6,7 @@ use App\Order;
 use App\OrderDishServing;
 use App\User;
 use Carbon\Carbon;
+use Darryldecode\Cart\CartCollection;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
@@ -35,22 +36,34 @@ class OrderController extends Controller
     {
         session()->forget('order_edit_back_url');
         if (Auth::user()->hasRole('user')) {
-            $orders = $this->getUserOrders(self::PAGINATE, Auth::user());
+            $kitchenTaskList = null;
+            $ordersPaginated = $this->getUserOrders(self::PAGINATE, Auth::user());
             $pageTitle = 'Заказы';
         } elseif (Auth::user()->hasRole('kitchener')) {
-            $orders = $this->getKitchenerOrders(self::PAGINATE);
-            $pageTitle = ($this->getDeadlineTime() > Carbon::now()) ? 'Заказы еще могут быть изменены или удалены клиентом' : 'Не готовые заказы зафиксированы и подлежат выполнению';
+            $kitchenTaskList = $this->getKitchenTaskList();
+
+
+
+//            dd($kitchenTaskList);
+
+
+
+            $ordersPaginated = $this->getKitchenerOrders(self::PAGINATE);
+            $pageTitle = ($this->getDeadlineTime() > Carbon::now())
+                ? 'Заказы еще могут быть изменены или удалены клиентом'
+                : 'Не готовые заказы зафиксированы и подлежат выполнению';
         }
 
         return view('home')->with([
-            'kitchen_orders' => $orders,
+            'kitchen_orders' => $ordersPaginated,
             'page_title' => $pageTitle,
             'basket' => Cart::getTotalQuantity(),
+            'kitchenTaskList' => $kitchenTaskList,
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new order.
      *
      * @return \Illuminate\Http\Response
      */
@@ -65,13 +78,13 @@ class OrderController extends Controller
             return view('home')->with([
                 'cart_for_order' => Cart::getContent(),
                 'user_addresses' => $addresses,
-                'page_title' => 'Оформление заказа: всего ' . Cart::getTotal() . 'грн.',
+                'page_title' => 'Оформление заказа: итого ' . Cart::getTotal() . 'грн.',
             ]);
         }
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created order in storage.
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
@@ -84,15 +97,17 @@ class OrderController extends Controller
                 'dinner_time' => $request->dinner_time,
                 'status' => 1,
             ]);
+//CartCollection
+            $this->createOrderDishservings(Cart::getContent(), $order);
 
-            foreach (Cart::getContent() as $item) {
-                OrderDishServing::create([
-                    'order_id' => $order->id,
-                    'dish_id' => $item->attributes->dishserving->dish_id,
-                    'serving_id' => $item->attributes->dishserving->serving_id,
-                    'count' => $item->quantity,
-                ]);
-            };
+//            foreach (Cart::getContent() as $item) {
+//                OrderDishServing::create([
+//                    'order_id' => $order->id,
+//                    'dish_id' => $item->attributes->dishserving->dish_id,
+//                    'serving_id' => $item->attributes->dishserving->serving_id,
+//                    'count' => $item->quantity,
+//                ]);
+//            };
 
             Cart::clear();
             Cart::session(Auth::user()->id)->clear();
@@ -126,9 +141,8 @@ class OrderController extends Controller
             return $this->returnEditView($order, $id, Cart::getTotalQuantity());
         } elseif (Auth::user()->hasRole('kitchener') && ($order = $this->getKitchenerEditOrder($id))) {
             return $this->returnEditView($order, $id, Cart::getTotalQuantity());
-        } else {
-            return redirect()->route('orders.index')->withError('Заказ №' . $id . ' не может быть изменен.');
         }
+        return redirect()->route('orders.index')->withError('Заказ №' . $id . ' не может быть изменен.');
     }
 
     /**
@@ -169,8 +183,9 @@ class OrderController extends Controller
                 $item->delete();
             });
             $order->delete();
+            return redirect($this->updateBackURI())->withStatus('Заказ №' . $id . ' удален.');
         }
-        return redirect()->route('orders.index')->withStatus('Заказ №' . $id . 'удален.');
+        return redirect($this->updateBackURI())->withError('Ошибка удаления заказа.');
     }
 
 
@@ -196,19 +211,17 @@ class OrderController extends Controller
             return [1];
         } elseif (Auth::user()->hasRole('kitchener')) {
             return [1, 2];
-        } else {
-            return [];
         }
+        return [];
     }
 
     protected function returnEditView(Order $order, int $id, int $quantity): ?View
     {
-        return view('home')
-            ->with([
-                'order_edit' => $order,
-                'page_title' => 'Заказ №' . $id,
-                'basket' => $quantity,
-            ]);
+        return view('home')->with([
+            'order_edit' => $order,
+            'page_title' => 'Заказ №' . $id,
+            'basket' => $quantity,
+        ]);
     }
 
     protected function getUserAddresses(Authenticatable $user): array
@@ -267,5 +280,44 @@ class OrderController extends Controller
         $order->dinner_time = $dinnerTime;
         $order->address_id = $addressId;
         return $order->save();
+    }
+
+    protected function createOrderDishservings(CartCollection $cartContent, Order $order)
+    {
+        foreach ($cartContent as $item) {
+            OrderDishServing::create([
+                'order_id' => $order->id,
+                'dish_id' => $item->attributes->dishserving->dish_id,
+                'serving_id' => $item->attributes->dishserving->serving_id,
+                'count' => $item->quantity,
+            ]);
+        };
+    }
+
+    protected function getNotMadeOrders()
+    {
+        return Order::where('created_at', $this->getComparisonOperator(), $this->getDeadlineTime())
+            ->whereIn('status', [1])
+            ->with(['orderDishServings'])
+            ->get();
+    }
+
+    protected function getKitchenTaskList()
+    {
+        return $this->getNotMadeOrders()->map(function ($item) {
+            return $item->orderDishServings;
+        })
+            ->collapse()
+            ->groupBy(function ($item) {
+                return $item->dishServing->dish->title;
+            })
+            ->map(function ($item) {
+                return $item->groupBy(function ($item) {
+                    return $item->dishServing->serving->title;
+                })->map(function ($item) {
+                    $res3 = $item;
+                    return $res3->sum('count');
+                });
+            });
     }
 }

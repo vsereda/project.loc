@@ -32,12 +32,17 @@
                     <option value="3">Третее время</option>
                 </select>
             </div>
-            <button type="submit">
-                Заказать
-            </button>
-            <button type="button" onclick="location.href='{{ route('items.index') }}'">
-                Назад к корзину
-            </button>
+            <div class="btn-group ">
+                <button type="submit" class="btn btn-default">
+                    Заказать
+                </button>
+                <a href="{{ route('items.index') }}" class="btn btn-default">
+                    Назад в корзину
+                </a>
+                <a href="{{ route('products.index') }}" class="btn btn-default">
+                     В меню
+                </a>
+            </div>
         </form>
     @elseif(isset($user_addresses) && !count($user_addresses))
         <form action="{{ route('addresses.store') }}" method="post">
