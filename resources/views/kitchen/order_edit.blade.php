@@ -1,4 +1,11 @@
-@section('kitchen_order_edit')
+@extends('layouts.app')
+
+@section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-body">
     @if(isset($order_edit))
         <form action="{{ route('orders.update', $order_edit->id) }}" method="POST" id="edit_order">
             {{ csrf_field() }}
@@ -149,4 +156,9 @@
             {{ method_field('DELETE') }}
         </form>
     @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

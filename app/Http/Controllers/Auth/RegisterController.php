@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Address;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
@@ -28,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/products';
 
     /**
      * Create a new controller instance.
@@ -56,6 +57,7 @@ class RegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'phone' => 'required|unique:users|digits:10',
+            'address' => 'required|string|min:8',
         ]);
     }
 
@@ -67,13 +69,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = User::create([
+        $user = new User([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
             'password' => $data['password'],
             'password' => bcrypt($data['password']),
         ]);
+        $user->save();
+        $user->addresses()->save(new Address(['description'=>$data['address']]));
         $user->attachRole('user');
         return $user;
     }
@@ -81,12 +85,11 @@ class RegisterController extends Controller
     /**
      * Redirect users back after registration.
      */
-    protected function redirectTo()
-    {
-        if (session()->get('order_back_url')) {
-            return session()->pull('order_back_url');
-        }
-        return $this->redirectTo;
-//        return '/zalupa';
-    }
+//    protected function redirectTo()
+//    {
+////        if (session()->get('order_back_url')) {
+//            return session()->pull('register_back_url') ?? $this->redirectTo;
+////        }
+////        return $this->redirectTo;
+//    }
 }

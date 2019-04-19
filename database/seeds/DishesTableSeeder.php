@@ -13,20 +13,20 @@ class DishesTableSeeder extends Seeder
     public function run()
     {
         DB::table('dishes')->insert([
-            'title' => 'Борщ',
-            'description' => 'Самый лучший борщ'
+            'title' => 'Суп 1',
+            'description' => 'Описание блюда суп 1'
         ]);
         DB::table('dishes')->insert([
-            'title' => 'Суп',
-            'description' => 'Самый лучший суп'
+            'title' => 'Суп 2',
+            'description' => 'Описание блюда суп 2'
         ]);
         DB::table('dishes')->insert([
-            'title' => 'Вареники',
-            'description' => 'Самые лучшие вареники'
+            'title' => 'Суп 3',
+            'description' => 'Описание блюда суп 3'
         ]);
         DB::table('dishes')->insert([
-            'title' => 'Пельмени',
-            'description' => 'Самые лучшие пельмени'
+            'title' => 'Суп 4',
+            'description' => 'Описание блюда суп 4'
         ]);
     }
 }

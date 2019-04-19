@@ -1,6 +1,7 @@
 <?php
 
 use App\Address;
+use Carbon\Carbon;
 use Faker\Generator as Faker;
 
 $factory->define(App\Order::class, function (Faker $faker) {
@@ -11,5 +12,6 @@ $factory->define(App\Order::class, function (Faker $faker) {
         'status' => rand(1, 4),
         'created_at' => time() - $minusHours,
 //        'updated_at' => time() - $minusHours,
+        'execution' => Carbon::tomorrow(),
     ];
 });

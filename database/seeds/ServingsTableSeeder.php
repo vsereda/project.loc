@@ -18,8 +18,8 @@ class ServingsTableSeeder extends Seeder
         DB::table('servings')->insert([
             'title' => '600 ml',
         ]);
-        DB::table('servings')->insert([
-            'title' => '1000 ml',
-        ]);
+//        DB::table('servings')->insert([
+//            'title' => '1000 ml',
+//        ]);
     }
 }

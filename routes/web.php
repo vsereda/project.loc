@@ -19,17 +19,20 @@ Route::get('/test1', 'TestController@test1');
 Route::get('/test2', 'TestController@test2');
 Auth::routes();
 
-Route::get('/', 'Home_Controller@index')->name('home');
-Route::get('/home', 'Home_Controller@index');
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@show')->name('home.show');
 
-Route::resource('products', 'ProductController');
 Route::resource('items', 'BasketController');
 
 Route::get('orders/tasks', 'OrderController@tasks')->middleware(['role:kitchener'])->name('order.tasks');
-Route::resource('orders', 'OrderController');
+Route::post('orders/create', 'OrderController@create')->middleware(['role:user'])->name('orders.create');
+Route::resource('orders', 'OrderController')->except(['create', 'show']);
 
 
 Route::group(['middleware' => 'auth'], function () {
+
+    Route::resource('products', 'ProductController');
+
 
     Route::resource('addresses', 'AddressesController');
 

@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
 </head>
 <body>
     <div id="app">
@@ -42,15 +43,6 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
 
-                        <!-- Shoping Basket -->
-                        @if(isset($basket) && $basket)
-                            <li>
-                                <a href="{{ route('items.index') }}">
-                                    Корзина: {{ $basket }} шт.
-                                </a>
-                            </li>
-                        @endif
-
                     <!-- Authentication Links -->
                         @guest
                             <li><a href="{{ route('login') }}">Войти</a></li>
@@ -68,7 +60,7 @@
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Logout
+                                            Выйти
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -82,9 +74,28 @@
                 </div>
             </div>
         </nav>
+{{--        <div class="container">--}}
+{{--            <div class="row">--}}
+{{--                <div class="col-md-10 col-md-offset-1">--}}
+{{--                    <div class="panel panel-default">--}}
+                        @if (session('status'))
+                            <div class="alert alert-success">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
 
-        @yield('content')
-    </div>
+                        @yield('content')
+
+                    </div>
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>

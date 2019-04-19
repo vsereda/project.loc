@@ -1,58 +1,172 @@
-@section('order_content')
-    @if(isset($cart_for_order) && count($cart_for_order) && isset($user_addresses) && count($user_addresses))
+@extends('layouts.app')
+@section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-md-offset-0">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+    @if(isset($orders) && count($orders) && count($orders->first()->orderDishServings))
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        Время обеда
+                    </th>
+                    <th scope="col">
+                        № Заказа
+                    </th>
+                    <th scope="col">
+                        Заказчик
+                    </th>
+                    <th scope="col">
+                        Адрес
+                    </th>
+                    <th scope="col">
+                        Тел
+                    </th>
+{{--                    <th scope="col">--}}
+{{--                        Создан--}}
+{{--                    </th>--}}
+{{--                    <th scope="col">--}}
+{{--                        Статус заказа--}}
+{{--                    </th>--}}
 
-        @foreach($cart_for_order as $cart)
-            <p>
-                {{ $cart->attributes->dishserving->dish->title }}
-                {{ $cart->attributes->dishserving->serving->title }}:
-                {{ $cart->quantity }}шт.
-                -{{ $cart->getPriceSum() }}грн.
-            </p>
-        @endforeach
+{{--                    <th scope="col">--}}
+{{--                        Стоимость--}}
+{{--                    </th>--}}
+                    <th scope="col">
+                        Блюдо
+                    </th>
+{{--                    @role('kitchener')--}}
+{{--                        <th scope="col">--}}
+{{--                        </th>--}}
+{{--                    @endrole--}}
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($orders as $order)
 
-        <form action="{{ route('orders.store') }}" method="post">
-            {{ csrf_field() }}
-            <div class="form-group">
-                <label for="sel1">
-                    Выбрать адрес доставки:
-                </label>
-                <select name="address_id" class="form-control" id="sel1">
-                    @foreach($user_addresses as $address)
-                        <option value="{{ $address->id }}">{{ $address->description }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="sel1">
-                    Выбрать время доставки:
-                </label>
-                <select name="dinner_time" class="form-control" id="sel1">
-                    <option value="1">Первое время</option>
-                    <option value="2">Второе время</option>
-                    <option value="3">Третее время</option>
-                </select>
-            </div>
-            <div class="btn-group ">
-                <button type="submit" class="btn btn-default">
-                    Заказать
-                </button>
-                <a href="{{ route('items.index') }}" class="btn btn-default">
-                    Назад в корзину
-                </a>
-                <a href="{{ route('products.index') }}" class="btn btn-default">
-                     В меню
-                </a>
-            </div>
-        </form>
-    @elseif(isset($user_addresses) && !count($user_addresses))
-        <form action="{{ route('addresses.store') }}" method="post">
-            {{ csrf_field() }}
-            <div class="form-group">
-                <label for="InputAddress">Адрес доставки</label>
-                <input type=text class="form-control" id="InputAddress" name="address" placeholder="Введите адрес..." required>
-                <small id="emailHelp" class="form-text text-muted">Для того чтобы осуществлять покупки, пользователь должен иметь хотябы один адрес доставки.</small>
-            </div>
-            <button type="submit" class="btn btn-primary">Добавить адрес</button>
-        </form>
+{{--                    @if($order->status == 1)--}}
+{{--                        <tr class="alert alert-danger">--}}
+{{--                    @elseif($order->status == 2)--}}
+{{--                        <tr class="alert alert-warning">--}}
+{{--                    @elseif($order->status == 3)--}}
+{{--                        <tr class="alert alert-info">--}}
+{{--                    @elseif($order->status == 4)--}}
+{{--                        <tr class="alert alert-success">--}}
+{{--                    @else--}}
+                        <tr>
+{{--                    @endif--}}
+{{--<tr>--}}
+                        <th scope="row" rowspan="{{ $order->orderDishServings->count() }}">
+                            {{ $order->dinner_time }}
+                        </th>
+{{--                        <td>--}}
+{{--                            {{ $order->created_at }}--}}
+{{--                        </td>--}}
+{{--                        <td>--}}
+{{--                            @if($order->status == 1)--}}
+{{--                                Не приготовлен--}}
+{{--                            @elseif ($order->status == 2)--}}
+{{--                                Приготовлен--}}
+{{--                            @elseif ($order->status == 3)--}}
+{{--                                Доставляется--}}
+{{--                            @elseif ($order->status == 4)--}}
+{{--                                Получен клиентом--}}
+{{--                            @endif--}}
+
+{{--                        </td>--}}
+                        <td rowspan="{{ $order->orderDishServings->count() }}">
+                            @editable_order($order)
+                            <a href="{{ route('orders.edit', $order->id) }}">{{ $order->id }}</a>
+                            @else
+                                {{ $order->id }}
+                            @endeditable_order
+                        </td>
+
+                        <td rowspan="{{ $order->orderDishServings->count() }}">
+                            {{ $order->address->user->name }}
+                        </td>
+
+                        <td rowspan="{{ $order->orderDishServings->count() }}">
+                            {{ $order->address->description }}
+                        </td>
+
+                        <td rowspan="{{ $order->orderDishServings->count() }}">
+                            +38{{ str_pad($order->address->user->phone, 10, '0', STR_PAD_LEFT) }}
+                        </td>
+
+
+                            {{--                        <td>--}}
+{{--                            {{--}}
+{{--                            array_sum($order->orderDishServings->map(function ($item, $key) {--}}
+{{--                                return  $item->dishServing->price * $item->count;--}}
+{{--                            })->toArray())--}}
+{{--                         }}--}}
+{{--                        </td>--}}
+
+{{--                        <td>--}}
+{{--                            @if(Auth::user()->hasRole('kitchener') )--}}
+{{--                                @if(1 == $order->status)--}}
+{{--                                    <form action="{{ route('orders.update',  $order->id ) }}"  method="post">--}}
+{{--                                        {{ csrf_field() }}--}}
+{{--                                        {{ method_field('PUT') }}--}}
+{{--                                        <input type="hidden" name="status" value="2">--}}
+{{--                                        @editable_order($order)--}}
+{{--                                        <button type="submit" class="btn btn-danger">Приготовлен</button>--}}
+{{--                                        @else--}}
+{{--                                            <button type="submit" class="btn btn-danger" disabled>Приготовлен</button>--}}
+{{--                                        @endeditable_order--}}
+{{--                                    </form>--}}
+{{--                                @elseif(2 == $order->status)--}}
+{{--                                    <form action="{{ route('orders.update',  $order->id ) }}"  method="post">--}}
+{{--                                        {{ csrf_field() }}--}}
+{{--                                        {{ method_field('PUT') }}--}}
+{{--                                        <input type="hidden" name="status" value="1">--}}
+{{--                                        @editable_order($order)--}}
+{{--                                            <button type="submit" class="btn btn-default">--}}
+{{--                                                Не приготовлен--}}
+{{--                                            </button>--}}
+{{--                                        @else--}}
+{{--                                            <button type="submit" class="btn btn-default" disabled>--}}
+{{--                                                Не приготовлен--}}
+{{--                                            </button>--}}
+{{--                                        @endeditable_order--}}
+{{--                                    </form>--}}
+{{--                                @endif--}}
+{{--                            @endif--}}
+{{--                        </td>--}}
+{{--                            <td>--}}
+                                @foreach($order->orderDishServings as $orderDishServing)
+                                    <td>
+                                        {{ $orderDishServing->dishServing->dish->title  }}
+                                        ({{ $orderDishServing->dishServing->serving->title }})
+                                        -{{ $orderDishServing->count }}шт.
+                                    </td></tr>
+
+{{--                        @if($order->status == 1)--}}
+{{--                            <tr class="alert alert-danger">--}}
+{{--                        @elseif($order->status == 2)--}}
+{{--                            <tr class="alert alert-warning">--}}
+{{--                        @elseif($order->status == 3)--}}
+{{--                            <tr class="alert alert-info">--}}
+{{--                        @elseif($order->status == 4)--}}
+{{--                            <tr class="alert alert-success">--}}
+{{--                        @else--}}
+                            <tr>
+{{--                        @endif--}}
+                                @endforeach
+                            </td>
+                        </tr>
+                    </tr>
+                @endforeach
+            </tbody>
+    </table>
+        {{ $orders->links() }}
     @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

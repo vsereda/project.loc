@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Dish;
 use App\DishServing;
-use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Http\Request;
 use App\Http\Middleware\ProductsMiddleware;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -22,10 +22,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('home')->with([
+//        dd('products');
+        return view('products')->with([
             'page_title' => 'Меню',
             'dishes' => Dish::all(),
-            'basket' => Cart::getTotalQuantity(),
         ]);
     }
 
@@ -42,7 +42,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -53,24 +53,24 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $dish = Dish::find($id);
-        return view('home')->with([
-            'page_title' => $dish->title,
-            'dish_to_order' => $dish,
-//            'dishes' => Dish::all(),
-            'basket' => Cart::getTotalQuantity(),
-        ]);
+//        $dish = Dish::find($id);
+//        return view('home')->with([
+//            'page_title' => $dish->title,
+//            'dish_to_order' => $dish,
+////            'dishes' => Dish::all(),
+////            'basket' => Cart::getTotalQuantity(),
+//        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -81,8 +81,8 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -93,7 +93,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
