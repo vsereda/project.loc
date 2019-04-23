@@ -21,11 +21,6 @@ class OrderController extends Controller
 {
     const PAGINATE = 10;
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function tasks()
     {
         $kitchenTaskList = $this->getKitchenTaskList();
@@ -50,9 +45,6 @@ class OrderController extends Controller
     {
         if (Auth::user()->hasRole('user')) {
             abort(404);
-            $ordersPaginated = $this->getUserOrders(self::PAGINATE, Auth::user());
-            $pageTitle = 'Заказы';
-            $view = 'user.orders';
         } elseif (Auth::user()->hasRole('kitchener')) {
             $ordersPaginated = $this->getKitchenerOrders(self::PAGINATE);
             $pageTitle = 'Заказы на сегодня';
@@ -75,7 +67,7 @@ class OrderController extends Controller
         if (count($dsString->keys()) && !($dishservings = $this->getDishservings($dsString->keys()))->contains(null)) {
             $dishServingCounts = $this->dishServingCounts($dishservings, $dsString);
             $total = $this->getTotalCost($dishServingCounts);
-            return view('create_order')->with([
+            return view('user.create_order')->with([
                 'page_title' => 'Оформление заказа: итого ' . $total . 'грн.',
                 'total' => $total,
                 'dishServingCounts' => $this->dishServingCounts($dishservings, $dsString),

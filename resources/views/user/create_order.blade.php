@@ -28,23 +28,7 @@
                                 {{ csrf_field() }}
                                 @foreach($dishServingCounts as $key => $dishServingCount)
                                     <input type="hidden" name="dish_servings[{{ $dishServingCount['ds']->dish_id }}/{{ $dishServingCount['ds']->serving_id }}]" value="{{ $dishServingCount['count'] }}">
-{{--                                    <input type="hidden" name="dish_servings[{{ $key }}]['serving_id']" value="{{ $dishServingCount['ds']->serving_id }}">--}}
-{{--                                    <input type="hidden" name="dish_servings[{{ $key }}]['count']" value="{{ $dishServingCount['count'] }}">--}}
                                 @endforeach
-
-
-
-{{--                                <div class="form-group">--}}
-{{--                                    <label for="sel1">--}}
-{{--                                        Выбрать адрес доставки:--}}
-{{--                                    </label>--}}
-{{--                                    <select name="address_id" class="form-control" id="sel1">--}}
-{{--                                        @foreach(Auth::user()->addresses as $address)--}}
-{{--                                            <option value="{{ $address->id }}">{{ $address->description }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-
                                 <div class="form-group">
                                     @if ( $errors->has('dinner_time'))
                                         <div class="alert alert-danger">

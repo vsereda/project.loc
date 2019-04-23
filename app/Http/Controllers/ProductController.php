@@ -23,8 +23,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-//        dd('products');
-        return view('products')->with([
+        return view('user.products')->with([
             'page_title' => 'Меню',
             'dishes' => Dish::all(),
             'servings' => Serving::all(),
@@ -60,13 +59,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-//        $dish = Dish::find($id);
-//        return view('home')->with([
-//            'page_title' => $dish->title,
-//            'dish_to_order' => $dish,
-////            'dishes' => Dish::all(),
-////            'basket' => Cart::getTotalQuantity(),
-//        ]);
+        //
     }
 
     /**

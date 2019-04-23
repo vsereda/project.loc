@@ -30,14 +30,9 @@ Route::group(['prefix' => 'kitchen'], function () {
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@show')->name('home.show');
 
-Route::resource('items', 'BasketController');
-
-Route::get('orders/tasks', 'OrderController@tasks')->middleware(['role:kitchener'])->name('order.tasks');
-Route::post('orders/create', 'OrderController@create')->middleware(['role:user'])->name('orders.create');
-Route::resource('orders', 'OrderController')->except(['create', 'show', 'edit', 'update', 'destroy']);
-
 Route::group(['middleware' => 'auth'], function () {
-    Route::resource('products', 'ProductController');
-    Route::resource('addresses', 'AddressesController');
+    Route::resource('products', 'ProductController')->only(['index']);
+    Route::get('orders/tasks', 'OrderController@tasks')->middleware(['role:kitchener'])->name('order.tasks');
+    Route::post('orders/create', 'OrderController@create')->middleware(['role:user'])->name('orders.create');
+    Route::resource('orders', 'OrderController')->except(['create', 'show', 'edit', 'update', 'destroy']);
 });
-
