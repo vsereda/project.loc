@@ -11,13 +11,21 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-
+//Test routes
 Route::get('/test1', 'TestController@test1');
 Route::get('/test2', 'TestController@test2');
+
+//Auth routes
 Auth::routes();
+Route::get('login', 'Auth\LoginUserController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginUserController@login');
+Route::get('register', 'Auth\RegisterUserController@showRegistrationForm')->name('register');
+Route::post('register', 'Auth\RegisterUserController@register');
+Route::group(['prefix' => 'kitchen'], function () {
+    Route::get('login', 'Auth\LoginController@showLoginForm')->name('kitchen_login');
+    Route::post('login', 'Auth\LoginController@login');
+});
+
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@show')->name('home.show');
@@ -26,25 +34,10 @@ Route::resource('items', 'BasketController');
 
 Route::get('orders/tasks', 'OrderController@tasks')->middleware(['role:kitchener'])->name('order.tasks');
 Route::post('orders/create', 'OrderController@create')->middleware(['role:user'])->name('orders.create');
-Route::resource('orders', 'OrderController')->except(['create', 'show']);
-
+Route::resource('orders', 'OrderController')->except(['create', 'show', 'edit', 'update', 'destroy']);
 
 Route::group(['middleware' => 'auth'], function () {
-
     Route::resource('products', 'ProductController');
-
-
     Route::resource('addresses', 'AddressesController');
-
-//    Route::group([
-//        'prefix' => 'kitchen',
-//        'middleware' => 'role:superadministrator|administrator|kitchener',
-//        ], function () {
-//            Route::resource('orders', 'OrderController');
-//            Route::get('/', 'KitchenController@index')->name('kitchen');
-//            Route::get('/dinner/{number}', 'KitchenController@diner_number')->name('dinner')->where('number', '[0-9]+');
-//    });
-//    Route::get('/delivery', 'CourierController@index')->name('courier')
-//        ->middleware(['role:superadministrator|administrator|courier']);
 });
 

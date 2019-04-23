@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller
+class LoginUserController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -40,5 +43,26 @@ class LoginController extends Controller
     public function username()
     {
         return 'login';
+    }
+
+    public function showLoginForm()
+    {
+        return view('auth.login_client');
+    }
+
+    public function login(Request $request)
+    {
+        $login = $request->login;
+
+        $user = User::where('login', $login)->first();
+
+        if (!$user || !($user->hasRole('user'))) {
+            return redirect()->back()->withInput($request->only('login'))->withErrors([
+                'login' => 'Не правильный логин',
+            ]);
+        }
+
+        Auth::login($user);
+        return redirect('/');
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
-class RegisterController extends Controller
+class RegisterUserController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
 //            'email' => 'required|string|email|max:255|unique:users',
             'login' => 'required|string|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+//            'password' => 'required|string|min:6|confirmed',
             'phone' => 'required|unique:users|digits:10',
             'address' => 'required|string|min:8',
         ]);
@@ -75,8 +75,8 @@ class RegisterController extends Controller
 //            'email' => $data['email'],
             'login' => $data['login'],
             'phone' => $data['phone'],
-            'password' => $data['password'],
-            'password' => bcrypt($data['password']),
+//            'password' => bcrypt(config($data['password'])),
+            'password' => bcrypt(config('default_password')),
         ]);
         $user->save();
         $user->addresses()->save(new Address(['description'=>$data['address']]));

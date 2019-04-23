@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Dish;
 use App\DishServing;
+use App\Serving;
 use Illuminate\Http\Request;
 use App\Http\Middleware\ProductsMiddleware;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,7 @@ class ProductController extends Controller
         return view('products')->with([
             'page_title' => 'Меню',
             'dishes' => Dish::all(),
+            'servings' => Serving::all(),
         ]);
     }
 

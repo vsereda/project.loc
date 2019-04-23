@@ -5,81 +5,104 @@
         <div class="row">
             <div class="col-md-12 col-md-offset-0">
                 <div class="panel panel-default">
-                @if ( $errors->has('dish_servings'))
-                    <div class="alert alert-danger">
-                        <strong>{{ $errors->first('dish_servings') }}</strong>
-                    </div>
-                @endif
-
-                <div class="panel-body">
-                    <style>
-                        .message{
-                            padding-bottom: 20px;
-                            font-weight: bold;
-                        }
-                    </style>
-
-                    <template>
-                        <div class="message"># @{{ count }}<br>
-                            <p># @{{ count }}</p>
-                            <button v-on:click.prevent="increment">+</button>
-                            <button v-on:click.prevent="decrement">-</button>
+                    @if ( $errors->has('dish_servings'))
+                        <div class="alert alert-danger">
+                            <strong>{{ $errors->first('dish_servings') }}</strong>
                         </div>
-                    </template>
-
-
-
-                    @if(isset($dishes) && count($dishes))
-
-                        <form action="{{ route('orders.create') }}" method="post">
-                            {{ csrf_field() }}
-                            @foreach($dishes as $dish)
-                                @foreach($dish->servings as $serving)
-                                    <div class="form-group ">
-                                        <label for="dish_servings_{{ $dish->id }}/{{ $serving->id }}">
-                                            {{ $dish->title }}, порция {{ $serving->title }} -{{ $serving->pivot->price }} грн.
-                                        </label>
-
-                                        <input type="number" name="dish_servings[{{ $dish->id }}/{{ $serving->id }}]" id="dish_servings_{{ $dish->id }}/{{ $serving->id }}" step="1" min="0" >
-                                    </div>
-                                @endforeach
-                            @endforeach
-
-            {{--                                <div class="form-group">--}}
-            {{--                                    <label for="sel1">--}}
-            {{--                                        Выбрать адрес доставки:--}}
-            {{--                                    </label>--}}
-            {{--                                    <select name="address_id" class="form-control" id="sel1">--}}
-            {{--                                        @foreach(Auth::user()->addresses as $address)--}}
-            {{--                                            <option value="{{ $address->id }}">{{ $address->description }}</option>--}}
-            {{--                                        @endforeach--}}
-            {{--                                    </select>--}}
-            {{--                                </div>--}}
-
-{{--                            <div class="form-group">--}}
-{{--                                @if ( $errors->has('dinner_time'))--}}
-{{--                                    <div class="alert alert-danger">--}}
-{{--                                        <strong>{{ $errors->first('dinner_time') }}</strong>--}}
-{{--                                    </div>--}}
-{{--                                @endif--}}
-{{--                                <label for="sel1">--}}
-{{--                                    Выберите время доставки:--}}
-{{--                                </label>--}}
-{{--                                <select name="dinner_time" class="form-control" id="sel1">--}}
-{{--                                    <option value="1">Первое время</option>--}}
-{{--                                    <option value="2">Второе время</option>--}}
-{{--                                    <option value="3">Третее время</option>--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-
-                            <div class="form-group">
-                                <button class="btn btn-default">
-                                    Заказать
-                                </button>
-                            </div>
-                        </form>
                     @endif
-                </div>
+
+                    <div class="panel-body">
+
+                        @if(isset($dishes) && count($dishes) && isset($servings) && count($servings))
+                            <form action="{{ route('orders.create') }}" method="post">
+                                {{ csrf_field() }}
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Название</th>
+                                        @foreach($servings as $serving)
+                                            <th>Порция {{ $serving->title }}</th>
+                                        @endforeach
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($dishes as $dish)
+                                        <tr>
+                                            <td>{{ $dish->title }}</td>
+                                            @foreach($servings as $serving)
+                                                <td>
+                                                    @if($dish->dishServings->where('serving_id', $serving->id)->first())
+                                                        {{ $dish->dishServings->where('serving_id', $serving->id)->first()->price }} грн. за порцию
+                                                        <input type="number"
+                                                               name="dish_servings[{{ $dish->id }}/{{ $serving->id }}]"
+                                                               id="dish_servings_{{ $dish->id }}/{{ $serving->id }}" step="1"
+                                                               min="0">
+                                                    @endif
+                                                </td>
+                                            @endforeach
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                                <div class="form-group">
+                                    <button class="btn btn-default">
+                                        Заказать
+                                    </button>
+                                </div>
+                            </form>
+{{--                            <form action="{{ route('orders.create') }}" method="post">--}}
+{{--                                {{ csrf_field() }}--}}
+{{--                                @foreach($dishes as $dish)--}}
+{{--                                    @foreach($dish->servings as $serving)--}}
+{{--                                        <div class="form-group ">--}}
+{{--                                            <label for="dish_servings_{{ $dish->id }}/{{ $serving->id }}">--}}
+{{--                                                {{ $dish->title }}, порция {{ $serving->title }}--}}
+{{--                                                -{{ $serving->pivot->price }} грн.--}}
+{{--                                            </label>--}}
+
+{{--                                            <input type="number"--}}
+{{--                                                   name="dish_servings[{{ $dish->id }}/{{ $serving->id }}]"--}}
+{{--                                                   id="dish_servings_{{ $dish->id }}/{{ $serving->id }}" step="1"--}}
+{{--                                                   min="0">--}}
+{{--                                        </div>--}}
+{{--                                    @endforeach--}}
+{{--                                @endforeach--}}
+
+                                {{--                                <div class="form-group">--}}
+                                {{--                                    <label for="sel1">--}}
+                                {{--                                        Выбрать адрес доставки:--}}
+                                {{--                                    </label>--}}
+                                {{--                                    <select name="address_id" class="form-control" id="sel1">--}}
+                                {{--                                        @foreach(Auth::user()->addresses as $address)--}}
+                                {{--                                            <option value="{{ $address->id }}">{{ $address->description }}</option>--}}
+                                {{--                                        @endforeach--}}
+                                {{--                                    </select>--}}
+                                {{--                                </div>--}}
+
+                                {{--                            <div class="form-group">--}}
+                                {{--                                @if ( $errors->has('dinner_time'))--}}
+                                {{--                                    <div class="alert alert-danger">--}}
+                                {{--                                        <strong>{{ $errors->first('dinner_time') }}</strong>--}}
+                                {{--                                    </div>--}}
+                                {{--                                @endif--}}
+                                {{--                                <label for="sel1">--}}
+                                {{--                                    Выберите время доставки:--}}
+                                {{--                                </label>--}}
+                                {{--                                <select name="dinner_time" class="form-control" id="sel1">--}}
+                                {{--                                    <option value="1">Первое время</option>--}}
+                                {{--                                    <option value="2">Второе время</option>--}}
+                                {{--                                    <option value="3">Третее время</option>--}}
+                                {{--                                </select>--}}
+                                {{--                            </div>--}}
+
+{{--                                <div class="form-group">--}}
+{{--                                    <button class="btn btn-default">--}}
+{{--                                        Заказать--}}
+{{--                                    </button>--}}
+{{--                                </div>--}}
+{{--                            </form>--}}
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -166,3 +189,5 @@
 {{--        </form>--}}
 {{--    @endisset--}}
 {{--@endsection--}}
+{{--<img class="product" src="https://d2lm6fxwu08ot6.cloudfront.net/img-thumbs/960w/IP3VG5E0X8.jpg" alt="food">--}}
+

@@ -5,7 +5,7 @@
             <div class="col-md-12 col-md-offset-0">
                 <div class="panel panel-default">
                     <div class="panel-body">
-    @if(isset($orders) && count($orders) && count($orders->first()->orderDishServings))
+    @if(isset($orders))
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -44,6 +44,7 @@
                 </tr>
             </thead>
             <tbody>
+            @if(count($orders))
                 @foreach($orders as $order)
                         <tr>
 {{--<tr>--}}
@@ -139,6 +140,11 @@
                         </tr>
                     </tr>
                 @endforeach
+            @else
+                <tr>
+                    <td colspan="6">Нет заказов</td>
+                </tr>
+            @endif
             </tbody>
     </table>
         {{ $orders->links() }}

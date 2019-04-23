@@ -17,7 +17,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-12 col-md-offset-0">
                 <div class="panel panel-default">
 
 {{--                    <div class="panel-heading">--}}
@@ -64,7 +64,7 @@
                             @endauth
 
                             @guest
-                                <h4>Для возможности заказа <a href="{{ route('register') }}">зарегистируйтесь</a> или <a href="{{ route('login') }}">войдите</a></h4>
+                                <h4>Для возможности заказа <a href="{{ route('register') }}">зарегистируйтесь</a> или <a href="{{ route('login') }}">войдите под своим ником</a></h4>
                             @endguest
 {{--                        @yield('basket_content')--}}
 {{--                        @yield('order_content')--}}

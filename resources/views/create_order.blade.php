@@ -61,10 +61,13 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="btn-group">
                                     <button type="submit" class="btn btn-default">
                                         Подтвердить заказ
                                     </button>
+                                    <a href="{{ route('products.index') }}" class="btn btn-default">
+                                        Назад в меню
+                                    </a>
                                 </div>
 
                             </form>

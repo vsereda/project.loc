@@ -20,25 +20,33 @@
                         Название
                     </th>
                     <th scope="col">
-                        Всего
+                        Количество
                     </th>
                 </tr>
             </thead>
             <tbody>
-            @foreach($kitchenTaskList1 as $dish => $dishCollection)
+            @if($kitchenTaskList1->count())
+                @foreach($kitchenTaskList1 as $dish => $dishCollection)
+                    <tr>
+                        <th >
+                            {{ $dish }}
+                        </th>
+                        <td >
+                            {{
+                                number_format($dishCollection->map(function ($item, $key){
+                                    return preg_replace("/[^0-9]/", '', $key) * $item;
+                                })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
+                            }}
+                        </td>
+                    </tr>
+                @endforeach
+            @else
                 <tr>
-                    <th >
-                        {{ $dish }}
-                    </th>
-                    <td >
-                        {{
-                            number_format($dishCollection->map(function ($item, $key){
-                                return preg_replace("/[^0-9]/", '', $key) * $item;
-                            })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
-                        }}
+                    <td colspan="2">
+                        пусто
                     </td>
                 </tr>
-            @endforeach
+            @endif
             </tbody>
         </table>
     @endisset
@@ -56,25 +64,33 @@
                     Название
                 </th>
                 <th scope="col">
-                    Всего
+                    Количество
                 </th>
             </tr>
             </thead>
             <tbody>
-            @foreach($kitchenTaskList2 as $dish => $dishCollection)
+            @if($kitchenTaskList2->count())
+                @foreach($kitchenTaskList2 as $dish => $dishCollection)
+                    <tr>
+                        <th >
+                            {{ $dish }}
+                        </th>
+                        <td >
+                            {{
+                                number_format($dishCollection->map(function ($item, $key){
+                                    return preg_replace("/[^0-9]/", '', $key) * $item;
+                                })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
+                            }}
+                        </td>
+                    </tr>
+                @endforeach
+            @else
                 <tr>
-                    <th >
-                        {{ $dish }}
-                    </th>
-                    <td >
-                        {{
-                            number_format($dishCollection->map(function ($item, $key){
-                                return preg_replace("/[^0-9]/", '', $key) * $item;
-                            })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
-                        }}
+                    <td colspan="2">
+                        пусто
                     </td>
                 </tr>
-            @endforeach
+            @endif
             </tbody>
         </table>
     @endisset
@@ -92,25 +108,33 @@
                     Название
                 </th>
                 <th scope="col">
-                    Всего
+                    Количество
                 </th>
             </tr>
             </thead>
             <tbody>
-            @foreach($kitchenTaskList3 as $dish => $dishCollection)
+            @if($kitchenTaskList3->count())
+                @foreach($kitchenTaskList3 as $dish => $dishCollection)
+                    <tr>
+                        <th >
+                            {{ $dish }}
+                        </th>
+                        <td >
+                            {{
+                                number_format($dishCollection->map(function ($item, $key){
+                                    return preg_replace("/[^0-9]/", '', $key) * $item;
+                                })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
+                            }}
+                        </td>
+                    </tr>
+                @endforeach
+            @else
                 <tr>
-                    <th >
-                        {{ $dish }}
-                    </th>
-                    <td >
-                        {{
-                            number_format($dishCollection->map(function ($item, $key){
-                                return preg_replace("/[^0-9]/", '', $key) * $item;
-                            })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
-                        }}
+                    <td colspan="2">
+                        пусто
                     </td>
                 </tr>
-            @endforeach
+            @endif
             </tbody>
         </table>
     @endisset
@@ -128,25 +152,33 @@
                     Название
                 </th>
                 <th scope="col">
-                    Всего
+                    Количество
                 </th>
             </tr>
             </thead>
             <tbody>
-            @foreach($kitchenTaskList as $dish => $dishCollection)
+            @if($kitchenTaskList->count())
+                @foreach($kitchenTaskList as $dish => $dishCollection)
+                    <tr>
+                        <th >
+                            {{ $dish }}
+                        </th>
+                        <td >
+                            {{
+                                number_format($dishCollection->map(function ($item, $key){
+                                    return preg_replace("/[^0-9]/", '', $key) * $item;
+                                })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
+                            }}
+                        </td>
+                    </tr>
+                @endforeach
+            @else
                 <tr>
-                    <th >
-                        {{ $dish }}
-                    </th>
-                    <td >
-                        {{
-                            number_format($dishCollection->map(function ($item, $key){
-                                return preg_replace("/[^0-9]/", '', $key) * $item;
-                            })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
-                        }}
+                    <td colspan="2">
+                        пусто
                     </td>
                 </tr>
-            @endforeach
+            @endif
             </tbody>
         </table>
     @endisset

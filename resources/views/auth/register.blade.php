@@ -25,15 +25,15 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail</label>
+                        <div class="form-group{{ $errors->has('login') ? ' has-error' : '' }}">
+                            <label for="login" class="col-md-4 control-label">Логин</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="e-mail адрес..." required>
+                                <input id="login" type="login" class="form-control" name="login" value="{{ old('login') }}" placeholder="Введите логин..." required>
 
-                                @if ($errors->has('email'))
+                                @if ($errors->has('login'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('login') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-                            <label for="address" class="col-md-4 control-label">Адрес доставки</label>
+                            <label for="address" class="col-md-4 control-label">Адрес доставки (адрес офиса)</label>
 
                             <div class="col-md-6">
                                 <input id="address" type="text" class="form-control" name="address" placeholder="Введите адрес" required>
@@ -67,27 +67,27 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Пароль</label>
+{{--                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">--}}
+{{--                            <label for="password" class="col-md-4 control-label">Пароль</label>--}}
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" placeholder="Ввести пароль..." required>
+{{--                            <div class="col-md-6">--}}
+{{--                                <input id="password" type="password" class="form-control" name="password" placeholder="Ввести пароль..." required>--}}
 
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+{{--                                @if ($errors->has('password'))--}}
+{{--                                    <span class="help-block">--}}
+{{--                                        <strong>{{ $errors->first('password') }}</strong>--}}
+{{--                                    </span>--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
-                        <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">Подтвердите пароль</label>
+{{--                        <div class="form-group">--}}
+{{--                            <label for="password-confirm" class="col-md-4 control-label">Подтвердите пароль</label>--}}
 
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Повторить пароль..." required>
-                            </div>
-                        </div>
+{{--                            <div class="col-md-6">--}}
+{{--                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Повторить пароль..." required>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
