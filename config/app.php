@@ -164,6 +164,16 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        // Kitchen
+        App\Providers\Kitchen\TaskListServiceProvider::class,
+        App\Providers\Kitchen\ExecutionDateServiceProvider::class,
+        App\Providers\Kitchen\KitchenOrdersServiceProvider::class,
+
+        // Client
+        App\Providers\Client\OrderDishServingServiceProvider::class,
+        App\Providers\Client\DishServingServiceProvider::class,
+        App\Providers\Client\TotalCostServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
@@ -225,6 +235,18 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        // Kitchen
+        'KitchenTaskList' => App\Facades\Kitchen\KitchenTaskList::class,
+        'ExecutionDate' => App\Facades\Kitchen\ExecutionDate::class,
+        'KitchenOrders' => App\Facades\Kitchen\KitchenOrders::class,
+
+        // Client
+        'KitchenODS' => App\Facades\Client\OrderDishServings::class,
+        'KitchenDS' => App\Facades\Client\DishServings::class,
+        'TotalCost' => App\Facades\Client\TotalCost::class,
+
+
 
     ],
 
