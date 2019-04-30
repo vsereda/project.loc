@@ -1,5 +1,6 @@
 <?php
 
+use App\Address;
 use App\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Seeder;
@@ -14,6 +15,8 @@ class LaratrustSeeder extends Seeder
      */
     public function run()
     {
+        $addresses = Address::all();
+
         $this->command->info('Truncating Role and Permission tables, updating User table');
         $this->truncateLaratrustTables();
 
@@ -63,12 +66,13 @@ class LaratrustSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'phone' => rand(1000000000, 4000000000),
                 'remember_token' => str_random(10),
+                'address_id' => $addresses->random()->id,
             ]);
 
             $user->attachRole($role);
 
             // Attach addresses to user
-            $this->attachAdresses($user, 3);
+//            $this->attachAdresses($user, 3);
         }
 
         // Creating user with permissions
@@ -86,10 +90,11 @@ class LaratrustSeeder extends Seeder
                         'password' => bcrypt('password'),
                         'phone' => rand(1000000000, 4000000000),
                         'remember_token' => str_random(10),
+                        'address_id' => $addresses->random()->id,
                     ]);
 
                     // Attach addresses to user
-                    $this->attachAdresses($user, 3);
+//                    $this->attachAdresses($user, 3);
 
                     $permissions = [];
 
@@ -138,12 +143,18 @@ class LaratrustSeeder extends Seeder
      *
      * Copyed from AddressTableSeeder
      */
-    protected function attachAdresses(User $user, int $count): void
-    {
-        for ($i = 0; $i < $count; $i++) {
-            $user->addresses()->save(factory(App\Address::class)->make());
-        }
-    }
+//    protected function attachAdresses(User $user, int $count): void
+//    {
+//        for ($i = 0; $i < $count; $i++) {
+//            $user->addresses()->save(factory(App\Address::class)->make());
+//        }
+//    }
+//    protected function attachUsers(User $address, int $count): void
+//    {
+//        for ($i = 0; $i < $count; $i++) {
+//            $address->users()->save(factory(App\User::class)->make());
+//        }
+//    }
 }
 
 

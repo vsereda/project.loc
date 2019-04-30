@@ -8,6 +8,7 @@
                 <div class="panel-heading">Регистрация</div>
 
                 <div class="panel-body">
+                    @if(isset($addresses) && $addresses->count())
                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 
@@ -57,8 +58,11 @@
                             <label for="address" class="col-md-4 control-label">Адрес доставки (адрес офиса)</label>
 
                             <div class="col-md-6">
-                                <input id="address" type="text" class="form-control" name="address" placeholder="Введите адрес" required>
-
+                                <select class="form-control" name="address">
+                                    @foreach($addresses as $address)
+                                        <option value="{{ $address->id }}">{{ $address->description }}</option>
+                                    @endforeach
+                                </select>
                                 @if ($errors->has('address'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('address') }}</strong>
@@ -97,6 +101,9 @@
                             </div>
                         </div>
                     </form>
+                    @else
+                        <h3>Приложение не готово. Нет доступных адресов доставки. Администратору необходимо добавить адреса. </h3>
+                    @endif
                 </div>
             </div>
         </div>

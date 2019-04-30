@@ -8,15 +8,15 @@ class Address extends Model
 {
     //
     protected $table = 'addresses';
-    protected $fillable = ['description', 'user_id',];
+    protected $fillable = ['description', ];
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo('App\User');
+        return $this->hasMany('App\User');
     }
 
-    public function orders()
-    {
-        return $this->hasMany('App\Order');
-    }
+//    public function orders()
+//    {
+//        return $this->hasMany('App\Order');
+//    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Address;
 use App\User;
 use Illuminate\Database\Seeder;
 
@@ -12,8 +13,11 @@ class AddressesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\User::class, 4)->create()->each(function ($user) {
-            $this->attachAdresses($user, 3);
+//        factory(App\User::class, 4)->create()->each(function ($user) {
+//            $this->attachAdresses($user, 3);
+//        });
+        factory(App\Address::class, 4)->create()->each(function ($address) {
+            $this->attachUsers($address, 3);
         });
     }
 
@@ -23,10 +27,10 @@ class AddressesTableSeeder extends Seeder
      *
      * Copyed to LaratrustSeeder
      */
-    protected function attachAdresses(User $user, int $count): void
+    protected function attachUsers(Address $address, int $count): void
     {
         for ($i = 0; $i < $count; $i++) {
-            $user->addresses()->save(factory(App\Address::class)->make());
+            $address->users()->save(factory(App\User::class)->make());
         }
     }
 }

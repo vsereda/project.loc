@@ -81,7 +81,8 @@ class OrderController extends Controller
     public function store(ConfirmOrderRequest $request)
     {
         $order = Order::create([
-            'address_id' => Auth::user()->addresses->first()->id,
+//            'address_id' => Auth::user()->addresses->first()->id,
+            'user_id' => Auth::user()->id,
             'dinner_time' => $request->dinner_time,
             'status' => 1,
             'execution' => ExecutionDate::get(),

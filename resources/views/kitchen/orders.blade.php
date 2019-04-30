@@ -76,15 +76,15 @@
                         </td>
 
                         <td rowspan="{{ $order->orderDishServings->count() }}">
-                            {{ $order->address->user->name }}
+                            {{ $order->user->name }}
                         </td>
 
                         <td rowspan="{{ $order->orderDishServings->count() }}">
-                            {{ $order->address->description }}
+                            {{ $order->user->address->description }}
                         </td>
 
                         <td rowspan="{{ $order->orderDishServings->count() }}">
-                            +38{{ str_pad($order->address->user->phone, 10, '0', STR_PAD_LEFT) }}
+                            +38{{ str_pad($order->user->phone, 10, '0', STR_PAD_LEFT) }}
                         </td>
 
 

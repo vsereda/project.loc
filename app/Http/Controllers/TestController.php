@@ -16,6 +16,7 @@ class TestController extends Controller
 {
     public function test1()
     {
+        dd(Address::all()->random()->id);
 return view('home');
     }
 

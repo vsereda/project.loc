@@ -45,6 +45,16 @@ class RegisterUserController extends Controller
     }
 
     /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        return view('auth.register')->with(['addresses' => Address::all()]);
+    }
+
+    /**
      * Get a validator for an incoming registration request.
      *
      * @param array $data
@@ -58,7 +68,7 @@ class RegisterUserController extends Controller
             'login' => 'required|string|max:255|unique:users',
 //            'password' => 'required|string|min:6|confirmed',
             'phone' => 'required|unique:users|digits:10',
-            'address' => 'required|string|min:8',
+            'address' => 'required|numeric|min:1',
         ]);
     }
 
@@ -75,11 +85,12 @@ class RegisterUserController extends Controller
 //            'email' => $data['email'],
             'login' => $data['login'],
             'phone' => $data['phone'],
+            'address_id' => $data['address'],
 //            'password' => bcrypt(config($data['password'])),
             'password' => bcrypt(config('default_password')),
         ]);
         $user->save();
-        $user->addresses()->save(new Address(['description'=>$data['address']]));
+//        $user->addresses()->save(new Address(['description'=>$data['address']]));
         $user->attachRole('user');
         return $user;
     }
