@@ -11,7 +11,7 @@
                         </div>
                     @endif
 
-                    <div class="panel-body">
+                        <div class="panel-body">
 
                         @if(isset($dishes) && count($dishes) && isset($servings) && count($servings))
                             <form action="{{ route('orders.create') }}" method="post">

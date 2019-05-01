@@ -24,13 +24,17 @@ class OrderController extends Controller
 
     public function tasks()
     {
-        return view('kitchen.tasks')->with([
-            'page_title' => 'Задания',
-            'kitchenTaskList' => KitchenTaskList::get(),
-            'kitchenTaskList1' => KitchenTaskList::get(1),
-            'kitchenTaskList2' => KitchenTaskList::get(2),
-            'kitchenTaskList3' => KitchenTaskList::get(3),
-        ]);
+        if (Auth::user()->hasRole('kitchener')) {
+            return view('kitchen.tasks')->with([
+                'page_title' => 'Задания',
+                'kitchenTaskList' => KitchenTaskList::get(),
+                'kitchenTaskList1' => KitchenTaskList::get(1),
+                'kitchenTaskList2' => KitchenTaskList::get(2),
+                'kitchenTaskList3' => KitchenTaskList::get(3),
+            ]);
+        } else {
+            return redirect()->route('home');
+        }
     }
 
     /**
@@ -40,11 +44,11 @@ class OrderController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->hasRole('user')) {
-            abort(404);
-        } elseif (Auth::user()->hasRole('kitchener')) {
+        if (Auth::user()->hasRole('kitchener|courier')) {
             $pageTitle = 'Заказы на сегодня';
             $view = 'kitchen.orders';
+        } else {
+            return redirect()->route('home');
         }
         return view($view)->with([
             'orders' => KitchenOrders::get(self::PAGINATE),

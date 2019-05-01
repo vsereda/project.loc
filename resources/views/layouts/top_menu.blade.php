@@ -27,7 +27,16 @@
 {{--</li>--}}
 @endrole
 
-@role('kitchener')
+@role('courier')
+<li>
+    <a href="{{ route('delivery.index') }}">
+        Доставка
+    </a>
+</li>
+@endrole
+
+
+@role('kitchener|courier')
 <li>
     <a href="{{ route('orders.index') }}">
         Заказы

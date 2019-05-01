@@ -16,11 +16,9 @@ class ProductsMiddleware
      */
     public function handle($request, Closure $next)
     {
-
-        if (Auth::user() && Auth::user()->hasrole('kitchener|administrator')) {
+        if (Auth::user() && Auth::user()->hasrole('kitchener|administrator|courier')) {
             return redirect()->route('home');
         }
-
         return $next($request);
     }
 }

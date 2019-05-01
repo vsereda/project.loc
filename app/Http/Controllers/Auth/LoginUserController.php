@@ -58,7 +58,7 @@ class LoginUserController extends Controller
 
         if (!$user || !($user->hasRole('user'))) {
             return redirect()->back()->withInput($request->only('login'))->withErrors([
-                'login' => 'Не правильный логин',
+                'login' => 'Не правильный логин или пароль',
             ]);
         }
 

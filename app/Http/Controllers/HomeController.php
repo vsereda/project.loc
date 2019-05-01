@@ -10,21 +10,27 @@ class HomeController extends Controller
 {
     public function index()
     {
-        switch (true){
+        switch (true) {
             case (!Auth::user()):
                 return redirect()->route('home.show');
-            case (Auth::user()->hasRole('kitchener')):
+            case (Auth::user()->hasRole('kitchener|courier')):
                 return redirect()->route('orders.index');
             case (Auth::user()->hasRole('user')):
                 return redirect()->route('products.index');
+            default:
+                return redirect()->route('logout');
         }
     }
 
     public function show()
     {
-        return view('home')->with([
+        if (!Auth::user() || (Auth::user() && Auth::user()->hasRole('user'))) {
+            return view('home')->with([
 //            'page_title' => 'Меню',
-            'dishes' => Dish::all(),
-        ]);
+                'dishes' => Dish::all(),
+            ]);
+        } else {
+            return redirect()->route('home');
+        }
     }
 }
