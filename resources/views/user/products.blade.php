@@ -2,7 +2,12 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
+        <div class="panel panel-default">
+            <div class="row">
+                <div class="col-xs-6 bg-primary">564</div>
+                <div class="col-xs-6 bg-success">654</div>
+            </div>
+        </div>
             <div class="col-md-12 col-md-offset-0">
                 <div class="panel panel-default">
                     @if ( $errors->has('dish_servings'))
@@ -11,15 +16,28 @@
                         </div>
                     @endif
 
-                        <div class="panel-body">
-
+                        <div class="col-xs-6 bg-warning">hjfht</div>
+                        <div class="col-xs-6 bg-success">hjfht</div>
+                        <div class="row row-eq-heightgit">
+                            <div class="col-xs-6 bg-warning">
+                                <input type="number"
+                                       name="dish_servings"
+                                       id="dish_servings" step="1"
+                                       min="0"
+                                       placeholder="количество"
+                                       size="55"
+                                >
+                            </div>
+                            <div class="col-xs-6 bg-success">hjfht</div>
+                        </div>
                         @if(isset($dishes) && count($dishes) && isset($servings) && count($servings))
+
                             <form action="{{ route('orders.create') }}" method="post">
                                 {{ csrf_field() }}
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th>Название</th>
+{{--                                        <th>Название</th>--}}
                                         @foreach($servings as $serving)
                                             <th>Порция {{ $serving->title }}</th>
                                         @endforeach
@@ -28,15 +46,21 @@
                                     <tbody>
                                     @foreach($dishes as $dish)
                                         <tr>
-                                            <td>{{ $dish->title }}</td>
+{{--                                            <td>{{ $dish->title }}</td>--}}
                                             @foreach($servings as $serving)
                                                 <td>
                                                     @if($dish->dishServings->where('serving_id', $serving->id)->first())
-                                                        {{ $dish->dishServings->where('serving_id', $serving->id)->first()->price }} грн. за порцию
+                                                        <span class="help-block">
+                                                            {{ $dish->dishServings->where('serving_id', $serving->id)->first()->price }} грн. за порцию
+
+                                                        </span>
                                                         <input type="number"
                                                                name="dish_servings[{{ $dish->id }}/{{ $serving->id }}]"
                                                                id="dish_servings_{{ $dish->id }}/{{ $serving->id }}" step="1"
-                                                               min="0">
+                                                               min="0"
+                                                               placeholder="количество"
+                                                               size="55"
+                                                        >
                                                     @endif
                                                 </td>
                                             @endforeach

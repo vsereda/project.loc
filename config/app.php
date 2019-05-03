@@ -174,6 +174,9 @@ return [
         App\Providers\Client\DishServingServiceProvider::class,
         App\Providers\Client\TotalCostServiceProvider::class,
 
+        // Delivery
+        App\Providers\Delivery\ShortMessageServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
@@ -246,7 +249,8 @@ return [
         'KitchenDS' => App\Facades\Client\DishServings::class,
         'TotalCost' => App\Facades\Client\TotalCost::class,
 
-
+        // Delivery
+        'SendSMS' => App\Facades\Delivery\ShortMessageService::class
 
     ],
 

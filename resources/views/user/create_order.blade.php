@@ -17,7 +17,7 @@
                             <h4>Ваш заказ общей стоимостью {{ $total }} грн.:</h4>
                             <h4>Дата доставки {{ $executionDate->format('Y-m-d') }} </h4>
                             @foreach($dishServingCounts as $dishServingCount)
-                                <p>
+                                <p class="text-success">
                                     {{ $dishServingCount['ds']->dish->title }}
                                     ({{ $dishServingCount['ds']->serving->title }})
                                     -{{ $dishServingCount['count'] }} шт.

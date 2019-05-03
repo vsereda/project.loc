@@ -6,6 +6,7 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-body">
+                        <p class="alert alert-info">Количество оставшихся смс: <b>{{ $smsCount }}</b></p>
                     <h3>Отправить смс о доставке на адрес:</h3>
                     @if(isset($orders) && $orders->count())
                         @foreach($orders as $key => $collection)
@@ -17,7 +18,7 @@
                                         <input type="hidden" name="dinner_time" value="{{ $key }}">
                                         <input type="hidden" name="address_id" value="{{ $address->id }}">
                                         <button type="submit" class="btn btn-success btn-lg">
-                                            {{ $address->description }}
+                                            <small>{{ $address->description }}</small>
                                         </button>
                                     </form>
                                 </div>

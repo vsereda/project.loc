@@ -7,6 +7,8 @@ use App\Http\Requests\DeliveryStoreRequest;
 use App\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Mobizon\MobizonApi;
+use SendSMS;
 
 class DeliveryController extends Controller
 {
@@ -26,7 +28,9 @@ class DeliveryController extends Controller
                     return $item->user->address;
                 })->unique();
             });
-        return view('delivery.index')->with(['orders' => $orders]);
+//        $balance = ;
+        $smsCount = floor(SendSMS::getBalance() / abs(config('mobizon.mobizonprice')));
+        return view('delivery.index')->with(['orders' => $orders, 'smsCount' => $smsCount]);
     }
 
     /**
@@ -53,23 +57,25 @@ class DeliveryController extends Controller
             ->whereHas('user', function ($query) {
                 global $request;
                 $query->where('address_id', $request->address_id);
-            })
-            ->get();
+            })//            ->get()
+        ;
 
-        $users = $orders->map(function ($item, $key) {
+        $users = $orders->get()->map(function ($item, $key) {
             return $item->user;
         })->unique();
 
         $phones = $users->map(function ($item, $key) {
-            return $item->phone;
+            return 38 . str_pad($item->phone, 10, '0', STR_PAD_LEFT);
         });
+//dd($phones);
+        if ($resultError = SendSMS::send($phones, 'Ваш суп прибыл.')['error']) {
+//        if ($resultError = $this->sendSMS($phones, 'Ваш суп прибыл.')['error']) {
 
-        dump($orders);
-        dump($users);
-        dump($phones);
-
-//        $orders->update(['sms' => 1]);
-//        return redirect()->route('orders.index')->withStatus('Сообщение о доставке по адресу ' . Address::find($request->address_id)->description . ' отправлено');
+            return redirect()->route('orders.index')->withError($resultError);
+        } else {
+            $orders->update(['sms' => 1]);
+            return redirect()->route('orders.index')->withStatus('Сообщение о доставке по адресу ' . Address::find($request->address_id)->description . ' отправлено. ');
+        }
     }
 
     /**
