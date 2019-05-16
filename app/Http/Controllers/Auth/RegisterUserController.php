@@ -62,14 +62,39 @@ class RegisterUserController extends Controller
      */
     protected function validator(array $data)
     {
+        $messages = ['login' => 'Хуйэ'];
+
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
+            'name' => 'required|alpha|min:3|max:255',
 //            'email' => 'required|string|email|max:255|unique:users',
-            'login' => 'required|string|max:255|unique:users',
+            'login' => 'required|alpha_dash|min:4|max:255|unique:users',
 //            'password' => 'required|string|min:6|confirmed',
             'phone' => 'required|unique:users|digits:10',
-            'address' => 'required|numeric|min:1',
-        ]);
+            'address' => 'required|alpha_dash|max:255',
+        ],
+            [
+                'name.required' => 'Поле не должно быть пустым',
+                'name.alpha' => 'Имя должно состоять исключительно из буквенных символов.',
+                'name.min' => 'Имя должно содержать минимум 3 символа.',
+                'name.max' => 'Имя должно содержать максимум 255 символов.',
+
+                'login.required' => 'Поле не должно быть пустым',
+                'login.alpha_dash' => 'Поле должно содержать nолько буквенно-цифровые символы, а также тире и подчеркивания.',
+                'login.min' => 'Используйте минимум 4 символа',
+                'login.max' => 'Используйте максимум 255 символов',
+                'login.unique' => 'Такой пользователь уже существует',
+
+                'phone.required' => 'Поле не должно быть пустым',
+                'phone.unique' => 'Такой телефон уже используется',
+                'phone.digits' => 'Телефон должен содержать 10 цифер',
+
+                'address.required' => 'Поле не должно быть пустым',
+                'address.alpha_dash' => 'Поле должно содержать только буквенно-цифровые символы, а также тире и подчеркивания.',
+                'address.min' => 'Адрес должен содержать минимум 6 символов',
+                'address.max' => 'Адрес должен содержать максимум 255 символов',
+            ]);
+
+
     }
 
     /**

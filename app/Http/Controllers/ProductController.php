@@ -8,6 +8,7 @@ use App\Serving;
 use Illuminate\Http\Request;
 use App\Http\Middleware\ProductsMiddleware;
 use Illuminate\Support\Facades\Auth;
+use ExecutionDate;
 
 class ProductController extends Controller
 {
@@ -27,6 +28,7 @@ class ProductController extends Controller
             'page_title' => 'Меню',
             'dishes' => Dish::all(),
             'servings' => Serving::all(),
+            'executionDate' => substr(ExecutionDate::get(), 0, -8)
         ]);
     }
 

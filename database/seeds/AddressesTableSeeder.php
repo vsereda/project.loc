@@ -3,6 +3,7 @@
 use App\Address;
 use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class AddressesTableSeeder extends Seeder
 {
@@ -19,6 +20,10 @@ class AddressesTableSeeder extends Seeder
         factory(App\Address::class, 4)->create()->each(function ($address) {
             $this->attachUsers($address, 3);
         });
+
+        DB::table('addresses')->insert([
+            'description' => 'ул.Созовская, 100500',
+        ]);
     }
 
     /**

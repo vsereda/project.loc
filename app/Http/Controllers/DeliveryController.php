@@ -19,18 +19,28 @@ class DeliveryController extends Controller
      */
     public function index()
     {
-        $orders = Order::with('user')
+
+        $notices = Order::with('user.address')
             ->where('execution', Carbon::now()->format('Y-m-d'))
             ->where('sms', 0)
-            ->get()->groupBy('dinner_time')->sort()->reverse()
+            ->get()
+            ->groupBy('dinner_time')
             ->map(function ($item, $key) {
-                return $item->map(function ($item, $key) {
+                $addresses = $item->map(function ($item, $key) {
                     return $item->user->address;
-                })->unique();
-            });
-//        $balance = ;
+                })->unique()->keyBy('id');
+
+                $users = $item->map(function ($item, $key) {
+                    return $item->user;
+                })->unique()
+                    ->groupBy('address_id');
+
+                return ['users' => $users, 'addresses' => $addresses];
+            })
+            ->reverse();
+
         $smsCount = floor(SendSMS::getBalance() / abs(config('mobizon.mobizonprice')));
-        return view('delivery.index')->with(['orders' => $orders, 'smsCount' => $smsCount]);
+        return view('delivery.index')->with(['notices' => $notices, 'smsCount' => $smsCount]);
     }
 
     /**
@@ -44,7 +54,7 @@ class DeliveryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created delivery in storage.
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response

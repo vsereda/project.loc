@@ -22,6 +22,7 @@ Route::post('login', 'Auth\LoginUserController@login');
 Route::get('register', 'Auth\RegisterUserController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterUserController@register');
 Route::group(['prefix' => 'employee'], function () {
+    Route::redirect('/', 'login');
     Route::get('login', 'Auth\LoginController@showLoginForm')->name('kitchen_login');
     Route::post('login', 'Auth\LoginController@login');
 });
@@ -35,5 +36,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('orders/tasks', 'OrderController@tasks')->middleware(['role:kitchener'])->name('order.tasks');
     Route::post('orders/create', 'OrderController@create')->middleware(['role:user'])->name('orders.create');
     Route::resource('orders', 'OrderController')->except(['create', 'show', 'edit', 'update', 'destroy']);
-    Route::resource('delivery', 'DeliveryController')->middleware(['role:courier']);
+    Route::resource('delivery', 'DeliveryController')->only(['index', 'store'])->middleware(['role:courier']);
 });

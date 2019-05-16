@@ -84,14 +84,15 @@ class OrderController extends Controller
      */
     public function store(ConfirmOrderRequest $request)
     {
+        $execution = ExecutionDate::get();
         $order = Order::create([
 //            'address_id' => Auth::user()->addresses->first()->id,
             'user_id' => Auth::user()->id,
             'dinner_time' => $request->dinner_time,
             'status' => 1,
-            'execution' => ExecutionDate::get(),
+            'execution' => $execution,
         ]);
         KitchenODS::create($request, $order);
-        return redirect()->route('products.index')->withStatus('Заказ создан');
+        return redirect()->route('products.index')->withStatus(substr($execution, 0, -8) . ' заказ будет доставлен Вам в офис и Вы получите смс уведомление.');
     }
 }

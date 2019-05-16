@@ -8,20 +8,33 @@
                     <div class="panel-body">
                         <p class="alert alert-info">Количество оставшихся смс: <b>{{ $smsCount }}</b></p>
                     <h3>Отправить смс о доставке на адрес:</h3>
-                    @if(isset($orders) && $orders->count())
-                        @foreach($orders as $key => $collection)
-                            <h4>Время доставки №{{ $key}}:</h4>
-                            @foreach($collection as $address)
-                                <div class="form-group">
-                                    <form class="form-horizontal" method="POST" action="{{ route('delivery.store') }}">
-                                        {{ csrf_field() }}
-                                        <input type="hidden" name="dinner_time" value="{{ $key }}">
-                                        <input type="hidden" name="address_id" value="{{ $address->id }}">
-                                        <button type="submit" class="btn btn-success btn-lg">
-                                            <small>{{ $address->description }}</small>
-                                        </button>
-                                    </form>
-                                </div>
+                    @if(isset($notices) && $notices->count())
+                        @foreach($notices as $dinnerTime => $collectionNotices)
+{{--                            {{ $key }} => <pre>{{ var_dump($collectionNotices['users']) }}</pre>--}}
+
+{{--                            {{ $collectionNotices }}--}}
+{{--                                <p>444444444444444444444</p>--}}
+                                <h4>Время доставки №{{ $dinnerTime }}:</h4>
+                            @foreach($collectionNotices['users'] as $key => $users)
+
+
+{{--                                {{ $collectionNotices }}--}}
+
+{{--                                @foreach($address as $address)--}}
+                                    <div class="form-group">
+                                        <form class="form-horizontal" method="POST" action="{{ route('delivery.store') }}">
+                                            {{ csrf_field() }}
+                                            <input type="hidden" name="dinner_time" value="{{ $dinnerTime }}">
+                                            <input type="hidden" name="address_id" value="{{ $key }}">
+                                            <button type="submit" class="btn btn-success btn-lg">
+                                                <small>
+                                                    {{ $collectionNotices['addresses'][$key]->description }}
+                                                </small><br>
+                                                <small><strong>({{ $users->count() }} SMS)</strong></small>
+                                            </button>
+                                        </form>
+                                    </div>
+{{--                                @endforeach--}}
                             @endforeach
                         @endforeach
                     @else

@@ -31,6 +31,12 @@
                         Телефон
                     </th>
 
+                    @role('courier')
+                    <th scope="col">
+                        Стоимость
+                    </th>
+                    @endrole
+
                     <th scope="col">
                         Блюдо
                     </th>
@@ -66,6 +72,16 @@
                         <td rowspan="{{ $order->orderDishServings->count() }}">
                             <a href="tel:{{ '+38' . str_pad($order->user->phone, 10, '0', STR_PAD_LEFT) }}">+38{{ str_pad($order->user->phone, 10, '0', STR_PAD_LEFT) }}</a>
                         </td>
+
+                        @role('courier')
+                        <td rowspan="{{ $order->orderDishServings->count() }}">
+                            {{
+                                array_sum($order->orderDishServings->map(function ($item, $key) {
+                                    return  $item->dishServing->price * $item->count;
+                                })->toArray())
+                             }} грн.
+                        </td>
+                        @endrole
 
                                 @foreach($order->orderDishServings as $orderDishServing)
                                     <td>
