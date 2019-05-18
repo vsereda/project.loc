@@ -97,7 +97,13 @@
                 @endforeach
             @else
                 <tr>
-                    <td colspan="6">Нет заказов</td>
+                    @role('kitchener')
+                        <td colspan="6">Нет заказов</td>
+                    @endrole
+
+                    @role('courier')
+                    <td colspan="7">Нет заказов</td>
+                    @endrole
                 </tr>
             @endif
             </tbody>

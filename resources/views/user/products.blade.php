@@ -11,12 +11,18 @@
                 @endif
                 @if(isset($dishes) && count($dishes) && isset($servings) && count($servings))
 
+                        <div class="qty mt-5">
+                            <span class="plus ">+</span>
+                            <input type="text" class="count" name="qty" value="0">
+                            <span class="minus ">-</span>
+                        </div>
+
                     <form action="{{ route('orders.create') }}" method="post">
                         {{ csrf_field() }}
 
                     <div class="equal">
-                        <div class="prod-header col-xs-12 p-l-xl border-bottom">
-                            <h4><strong>Заказать доставку на {{ $executionDate }}. Выберите суп</strong></h4>
+                        <div class="prod-header col-xs-12 p-l-xl border-bottom text-center">
+                            <h4>Заказать доставку на {{ $executionDate }}. Выберите суп</h4>
                         </div>
 {{--                        @foreach($servings as $serving)--}}
 {{--                            <div class="col-xs-6 p-t-lg border-bottom">--}}
@@ -76,3 +82,4 @@
         </div>
     </div>
 @endsection
+

@@ -3,9 +3,13 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-12 col-md-offset-0">
             <div class="panel panel-default">
-                <div class="panel-heading">Регистрация</div>
+                <div class="panel-heading text-center">
+                    <h4>
+                        Регистрация
+                    </h4>
+                </div>
 
                 <div class="panel-body">
                     @if(isset($addresses) && $addresses->count())
@@ -16,7 +20,7 @@
                             <label for="name" class="col-md-4 control-label">Имя</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Введите сюда Ваше имя..." required autofocus>
+                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Введите Ваше имя..." required autofocus>
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -27,10 +31,10 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('login') ? ' has-error' : '' }}">
-                            <label for="login" class="col-md-4 control-label">Логин</label>
+                            <label for="login" class="col-md-4 control-label">Ник</label>
 
                             <div class="col-md-6">
-                                <input id="login" type="login" class="form-control" name="login" value="{{ old('login') }}" placeholder="Введите логин..." required>
+                                <input id="login" type="login" class="form-control" name="login" value="{{ old('login') }}" placeholder="Введите ваш ник..." required>
 
                                 @if ($errors->has('login'))
                                     <span class="help-block">
@@ -94,8 +98,8 @@
 {{--                        </div>--}}
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-default">
+                            <div class="col-md-6 col-md-offset-4 pt-2 text-center">
+                                <button type="submit" class="btn btn-info btn-lg">
                                     Зарегистрироваться
                                 </button>
                             </div>

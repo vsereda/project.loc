@@ -11,7 +11,7 @@ class KitchenOrders
 {
     public function get(int $paginate): ?LengthAwarePaginator
     {
-        return Order::where('execution', Carbon::now()->format('Y-m-d'))
+        return Order::with('user.address')->where('execution', Carbon::now()->format('Y-m-d'))
             ->orderBy('dinner_time')
             ->orderBy('id')
             ->paginate($paginate);

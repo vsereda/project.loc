@@ -9,7 +9,7 @@ class OrderDishServingTableSeeder extends Seeder
 {
     // Order count and dishServing count for each Order
     const ORDERS = 120;
-    const DISHSERVINGS = 24;
+    const DISHSERVINGS = 5;
 
     // Those variables are using for DishServings cache
     protected $dishServings;
@@ -36,7 +36,7 @@ class OrderDishServingTableSeeder extends Seeder
             // Attaching each Order to DishServings (choose DS count or const count, what is smaller)
             $this->AttachDishServing(
                 $order,
-                (self::DISHSERVINGS < $this->dishServings->count() ? self::DISHSERVINGS : $this->dishServings->count())
+                mt_rand(1, (self::DISHSERVINGS < $this->dishServings->count() ? self::DISHSERVINGS : $this->dishServings->count()))
             );
 
             // Resetting variables

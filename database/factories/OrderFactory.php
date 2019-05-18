@@ -15,6 +15,6 @@ $factory->define(App\Order::class, function (Faker $faker) {
         'status' => rand(1, 4),
         'created_at' => time() - $minusHours,
 //        'updated_at' => time() - $minusHours,
-        'execution' => Carbon::tomorrow(),
+        'execution' => Carbon::today(),
     ];
 });

@@ -13,6 +13,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/my_style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Ubuntu" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 </head>
 <body>
@@ -22,7 +24,7 @@
                 <div class="navbar-header">
 
                     <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
+                    <button type="button" class="navbar-toggle collapsed mt-12" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
                         <span class="sr-only">Toggle Navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -30,8 +32,9 @@
                     </button>
 
                     <!-- Branding Image -->
+
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        <span class="font-logo">{{ config('app.name', 'Laravel') }}</span>
                     </a>
                 </div>
 
@@ -42,7 +45,7 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right pt-3">
 
                     <!-- Authentication Links -->
                         @guest
@@ -102,3 +105,20 @@
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
+<script>
+    $(document).ready(function(){
+        $('.count').prop('disabled', true);
+        $(document).on('click','.plus',function(){
+            if($('.count').val() >= 9){
+                $('.count').val(-1);
+            }
+            $('.count').val(parseInt($('.count').val()) + 1 );
+        });
+        $(document).on('click','.minus',function(){
+            $('.count').val(parseInt($('.count').val()) - 1 );
+            if ($('.count').val() == -1) {
+                $('.count').val(0);
+            }
+        });
+    });
+</script>

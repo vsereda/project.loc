@@ -7,7 +7,8 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <p class="alert alert-info">Количество оставшихся смс: <b>{{ $smsCount }}</b></p>
-                    <h3>Отправить смс о доставке на адрес:</h3>
+                    <h3 class="fw-bold">Отправка смс о доставке по адресам:</h3>
+                        <hr>
                     @if(isset($notices) && $notices->count())
                         @foreach($notices as $dinnerTime => $collectionNotices)
 {{--                            {{ $key }} => <pre>{{ var_dump($collectionNotices['users']) }}</pre>--}}
@@ -26,7 +27,7 @@
                                             {{ csrf_field() }}
                                             <input type="hidden" name="dinner_time" value="{{ $dinnerTime }}">
                                             <input type="hidden" name="address_id" value="{{ $key }}">
-                                            <button type="submit" class="btn btn-success btn-lg">
+                                            <button type="submit" class="btn btn-success btn-lg m-b-md">
                                                 <small>
                                                     {{ $collectionNotices['addresses'][$key]->description }}
                                                 </small><br>

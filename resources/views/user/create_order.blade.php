@@ -46,10 +46,10 @@
                                 </div>
 
                                 <div class="btn-group">
-                                    <button type="submit" class="btn btn-default">
+                                    <button type="submit" class="btn btn-info">
                                         Подтвердить заказ
                                     </button>
-                                    <a href="{{ route('products.index') }}" class="btn btn-default">
+                                    <a href="{{ route('products.index') }}" class="btn btn-info">
                                         Назад в меню
                                     </a>
                                 </div>

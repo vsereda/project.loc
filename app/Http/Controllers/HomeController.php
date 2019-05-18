@@ -27,7 +27,7 @@ class HomeController extends Controller
         if (!Auth::user() || (Auth::user() && Auth::user()->hasRole('user'))) {
             return view('home')->with([
 //            'page_title' => 'Меню',
-                'dishes' => Dish::all(),
+                'dishes' => Dish::where('active', true)->get(),
             ]);
         } else {
             return redirect()->route('home');
