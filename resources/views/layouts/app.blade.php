@@ -78,7 +78,7 @@
                 </div>
             </div>
         </nav>
-{{--        <div class="container">--}}
+        {{--        <div class="container">--}}
 {{--            <div class="row">--}}
 {{--                <div class="col-md-10 col-md-offset-1">--}}
 {{--                    <div class="panel panel-default">--}}
@@ -105,20 +105,20 @@
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
-<script>
-    $(document).ready(function(){
-        $('.count').prop('disabled', true);
-        $(document).on('click','.plus',function(){
-            if($('.count').val() >= 9){
-                $('.count').val(-1);
-            }
-            $('.count').val(parseInt($('.count').val()) + 1 );
-        });
-        $(document).on('click','.minus',function(){
-            $('.count').val(parseInt($('.count').val()) - 1 );
-            if ($('.count').val() == -1) {
-                $('.count').val(0);
-            }
-        });
-    });
-</script>
+{{--<script>--}}
+{{--    $(document).ready(function(){--}}
+{{--        $('.count').prop('disabled', true);--}}
+{{--        $(document).on('click','.plus',function(){--}}
+{{--            if($('.count').val() >= 9){--}}
+{{--                $('.count').val(-1);--}}
+{{--            }--}}
+{{--            $('.count').val(parseInt($('.count').val()) + 1 );--}}
+{{--        });--}}
+{{--        $(document).on('click','.minus',function(){--}}
+{{--            $('.count').val(parseInt($('.count').val()) - 1 );--}}
+{{--            if ($('.count').val() == -1) {--}}
+{{--                $('.count').val(0);--}}
+{{--            }--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}

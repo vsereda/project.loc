@@ -10,71 +10,48 @@
                     </div>
                 @endif
                 @if(isset($dishes) && count($dishes) && isset($servings) && count($servings))
-
-                        <div class="qty mt-5">
-                            <span class="plus ">+</span>
-                            <input type="text" class="count" name="qty" value="0">
-                            <span class="minus ">-</span>
+                    <div class="equal">
+                            <div class="col-xs-4 col-sm-2" style="border: 1px solid blue">
+                                <p>
+                                    Шпинатный с нутом
+                                </p>
+                            </div>
+                        <div class="col-xs-4 col-sm-5" style="border: 1px solid blue">
+                            <plus-minus-component
+                                    name="dish_servings"
+                                    id="dish_servings"
+                            >
+                            </plus-minus-component>
+                        </div>
+                        <div class="col-xs-4 col-sm-5" style="border: 1px solid blue">
+                            <plus-minus-component
+                                    name="dish_servings"
+                                    id="dish_servings"
+                            >
+                            </plus-minus-component>
                         </div>
 
-                    <form action="{{ route('orders.create') }}" method="post">
-                        {{ csrf_field() }}
 
-                    <div class="equal">
+
                         <div class="prod-header col-xs-12 p-l-xl border-bottom text-center">
                             <h4>Заказать доставку на {{ $executionDate }}. Выберите суп</h4>
                         </div>
-{{--                        @foreach($servings as $serving)--}}
-{{--                            <div class="col-xs-6 p-t-lg border-bottom">--}}
-{{--                                <p class="text-center">--}}
-{{--                                    <strong>Порция {{ $serving->title }}</strong>--}}
-{{--                                </p>--}}
-{{--                            </div>--}}
-{{--                        @endforeach--}}
-                        @foreach($dishes as $dish)
-                            <div class="prod-dish col-xs-12  p-t-xl text-center">
-                                <h4 >
-                                    <strong>{{ $dish->title }}</strong>
-                                </h4>
-                            </div>
-                            @foreach($servings as $serving)
-                            <div class="col-xs-12 p-b-md col-sm-6 ">
-                                <div class="prod-desc col-xs-12 p-b-xs text-center ">
-                                    @if($dish->dishServings->where('serving_id', $serving->id)->first())
-                                        <h4>порция {{ $serving->title }}</h4>
-                                        <h4 class="help-block">
-                                            {{ $dish->dishServings->where('serving_id', $serving->id)->first()->price }} грн. за порцию
-                                        </h4>
+                        <form action="{{ route('orders.create') }}" method="post">
+                            {{ csrf_field() }}
 
-                                    @endif
-                                </div>
-
-                                <div class="col-xs-12 p-b-xs  text-center ">
-                                    <input type="number"
-                                           class="input-lg"
-                                           name="dish_servings[{{ $dish->id }}/{{ $serving->id }}]"
-                                           id="dish_servings_{{ $dish->id }}/{{ $serving->id }}" step="1"
-                                           min="0"
-                                           placeholder="количество"
+                            @foreach($dishes as $dish)
+                                <strong>{{ $dish->title }}</strong>
+                                @foreach($servings as $serving)
+                                    <plus-minus-component
+                                            name="dish_servings[{{ $dish->id }}/{{ $serving->id }}]"
+                                            id="dish_servings_{{ $dish->id }}/{{ $serving->id }}"
                                     >
-                                </div>
-                            </div>
-                                <hr>
-
+                                    </plus-minus-component>
+                                @endforeach
                             @endforeach
-                            <hr>
-                        @endforeach
-                        <div class="form-group col-xs-12 p-l-xl p-t-xl p-b-xl p-r-xl text-center">
-                            <button class="btn btn-info btn-lg">
-                                Заказать
-                            </button>
-                        </div>
-
-
-
-
-                    </form>
-
+                            <button type="submit">ok</button>
+                        </form>
+                    </div>
                 @endif
                 </div>
             </div>
