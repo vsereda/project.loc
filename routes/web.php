@@ -25,6 +25,7 @@ Route::get('/', 'Home_Controller@index')->name('home');
 Route::resource('products', 'ProductController');
 
 Route::resource('items', 'BasketController');
+
 Route::resource('orders', 'OrderController');
 
 

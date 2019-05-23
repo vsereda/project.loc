@@ -6,9 +6,9 @@
                     <th scope="col">
                         № Заказа
                     </th>
-                    <th scope="col">
-                        Создан
-                    </th>
+{{--                    <th scope="col">--}}
+{{--                        Создан--}}
+{{--                    </th>--}}
                     <th scope="col">
                         Статус заказа
                     </th>
@@ -18,6 +18,10 @@
                     <th scope="col">
                         Стоимость
                     </th>
+                    @role('kitchener')
+                        <th scope="col">
+                        </th>
+                    @endrole
                 </tr>
             </thead>
             <tbody>
@@ -25,23 +29,33 @@
                     @if($order->status == 1)
                         <tr class="alert alert-danger">
                     @elseif($order->status == 2)
+                        <tr class="alert alert-warning">
+                    @elseif($order->status == 3)
+                        <tr class="alert alert-info">
+                    @elseif($order->status == 4)
                         <tr class="alert alert-success">
                     @else
                         <tr>
                     @endif
                         <th scope="row">
-                            <a href="{{ route('orders.edit', $order->id) }}">
+                            @editable_order($order)
+                                <a href="{{ route('orders.edit', $order->id) }}">{{ $order->id }}</a>
+                            @else
                                 {{ $order->id }}
-                            </a>
+                            @endeditable_order
                         </th>
-                        <td>
-                            {{ $order->created_at }}
-                        </td>
+{{--                        <td>--}}
+{{--                            {{ $order->created_at }}--}}
+{{--                        </td>--}}
                         <td>
                             @if($order->status == 1)
                                 Не приготовлен
                             @elseif ($order->status == 2)
                                 Приготовлен
+                            @elseif ($order->status == 3)
+                                Доставляется
+                            @elseif ($order->status == 4)
+                                Получен клиентом
                             @endif
 
                         </td>
@@ -53,6 +67,37 @@
                                 return  $item->dishServing->price * $item->count;
                             })->toArray())
                          }}</td>
+                        <td>
+                            @if(Auth::user()->hasRole('kitchener') )
+                                @if(1 == $order->status)
+                                    <form action="{{ route('orders.update',  $order->id ) }}"  method="post">
+                                        {{ csrf_field() }}
+                                        {{ method_field('PUT') }}
+                                        <input type="hidden" name="status" value="2">
+                                        @editable_order($order)
+                                        <button type="submit" class="btn btn-success">Приготовить</button>
+                                        @else
+                                            <button type="submit" class="btn btn-success" disabled>Приготовить</button>
+                                        @endeditable_order
+                                    </form>
+                                @elseif(2 == $order->status)
+                                    <form action="{{ route('orders.update',  $order->id ) }}"  method="post">
+                                        {{ csrf_field() }}
+                                        {{ method_field('PUT') }}
+                                        <input type="hidden" name="status" value="1">
+                                        @editable_order($order)
+                                        <button type="submit" class="btn btn-success">
+                                            Вернуть в не приготовленные
+                                        </button>
+                                        @else
+                                            <button type="submit" class="btn btn-success" disabled>
+                                                Приготовить
+                                            </button>
+                                        @endeditable_order
+                                    </form>
+                                @endif
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

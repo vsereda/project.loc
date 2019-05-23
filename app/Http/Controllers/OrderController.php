@@ -7,7 +7,9 @@ use App\OrderDishServing;
 use App\User;
 use Carbon\Carbon;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Illuminate\View\View;
@@ -31,23 +33,18 @@ class OrderController extends Controller
      */
     public function index()
     {
+        session()->forget('order_edit_back_url');
         if (Auth::user()->hasRole('user')) {
-            $orders = Order::whereIn('address_id', $this->getUserAddresses(Auth::user()))
-                ->orderBy('id', 'desc')
-                ->paginate(self::PAGINATE);
-
+            $orders = $this->getUserOrders(self::PAGINATE, Auth::user());
+            $pageTitle = 'Заказы';
         } elseif (Auth::user()->hasRole('kitchener')) {
-            $orders = Order::where('created_at', $this->getComparisonOperator(), $this->getDeadlineTime())
-                ->whereIn('status', $this->getAvailableStatuses())
-                ->orderBy('status')
-                ->orderBy('dinner_time')
-                ->orderBy('id')
-                ->paginate(self::PAGINATE);
+            $orders = $this->getKitchenerOrders(self::PAGINATE);
+            $pageTitle = ($this->getDeadlineTime() > Carbon::now()) ? 'Заказы еще могут быть изменены или удалены клиентом' : 'Не готовые заказы зафиксированы и подлежат выполнению';
         }
 
         return view('home')->with([
             'kitchen_orders' => $orders,
-            'page_title' => 'Заказы',
+            'page_title' => $pageTitle,
             'basket' => Cart::getTotalQuantity(),
         ]);
     }
@@ -59,6 +56,7 @@ class OrderController extends Controller
      */
     public function create()
     {
+        session()->forget('order_edit_back_url');
         if (Auth::user()->hasRole('user')) {
             $addresses = Auth::user()->addresses;
             if (!count($addresses)) {
@@ -122,6 +120,8 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
+        session(['order_edit_back_url' => url()->previous()]);
+
         if (Auth::user()->hasRole('user') && ($order = $this->getUserEditOrder($id))) {
             return $this->returnEditView($order, $id, Cart::getTotalQuantity());
         } elseif (Auth::user()->hasRole('kitchener') && ($order = $this->getKitchenerEditOrder($id))) {
@@ -142,26 +142,16 @@ class OrderController extends Controller
     {
         if ($client = Auth::user()->hasRole('user')) {
             $order = $this->getUserEditOrder($id);
+            return ($order && $this->orderUpdate($order, $request, $client))
+                ? redirect($this->updateBackURI())->withStatus('Заказ №' . $id . ' сохранен.')
+                : redirect($this->updateBackURI())->withError('Запрещено.');
+
         } elseif (Auth::user()->hasRole('kitchener')) {
-            $order = $this->getDeadlineTime() < Carbon::now() ? $this->getKitchenerEditOrder($id) : null;
-            $client = null;
-        }
-        if (!$order) {
-            return redirect()->route('orders.index')->withError('Запрещено.');
-        }
-
-        $dinnerTime = $client ? $request->dinner_time : $order->dinner_time;
-        $status = $client ? 1 : $request->status;
-        $addressId = $client ? $request->address_id : $order->address_id;
-
-        if (false !== array_search($order->status, $this->getAvailableStatuses())) {
-            $order->status = $status;
-            $order->dinner_time = $dinnerTime;
-            $order->address_id = $addressId;
-            $order->save();
-            return redirect()->route('orders.index')->withStatus('Заказ №' . $id . ' сохранен.');
-        } else {
-            return redirect()->route('orders.index')->withError('Заказ №' . $id . ' не может быть изменен.');
+            $client = false;
+            $order = ($this->getDeadlineTime() < Carbon::now()) ? $this->getKitchenerEditOrder($id) : null;
+            return ($order && $this->orderUpdate($order, $request, $client))
+                ? redirect($this->updateBackURI())->withStatus('Заказ №' . $id . ' сохранен.')
+                : redirect($this->updateBackURI())->withError('Запрещено.');
         }
     }
 
@@ -173,6 +163,7 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
+        session()->forget('order_edit_back_url');
         if (Auth::user()->hasRole('user') && $order = $this->getUserEditOrder($id)) {
             $order->orderDishServings->map(function ($item) {
                 $item->delete();
@@ -193,7 +184,7 @@ class OrderController extends Controller
     protected function getComparisonOperator(): string
     {
         if (Auth::user()->hasRole('user')) {
-            return ($this->getDeadlineTime() > Carbon::now()) ? '<' : '>';
+            return ($this->getDeadlineTime() > Carbon::now()) ? '<' : '>=';
         } elseif (Auth::user()->hasRole('kitchener')) {
             return '<';
         }
@@ -212,20 +203,15 @@ class OrderController extends Controller
 
     protected function returnEditView(Order $order, int $id, int $quantity): ?View
     {
-//        dump($order);
-//        dump($id);
-//        dump($quantity);
-//        dump(Auth::user());
         return view('home')
             ->with([
                 'order_edit' => $order,
                 'page_title' => 'Заказ №' . $id,
                 'basket' => $quantity,
             ]);
-//        dump(4);
     }
 
-    protected function getUserAddresses(User $user): array
+    protected function getUserAddresses(Authenticatable $user): array
     {
         return $user->addresses->map(function ($item) {
             return $item->id;
@@ -241,11 +227,45 @@ class OrderController extends Controller
             ->first();
     }
 
+    protected function getUserOrders(int $paginate, Authenticatable $authUser): ?LengthAwarePaginator
+    {
+        return Order::whereIn('address_id', $this->getUserAddresses($authUser))
+            ->orderBy('id', 'desc')
+            ->paginate($paginate);
+    }
+
     protected function getKitchenerEditOrder(int $id): ?Order
     {
         return Order::where('id', $id)
             ->whereIn('status', $this->getAvailableStatuses())
             ->where('created_at', $this->getComparisonOperator(), $this->getDeadlineTime())
             ->first();
+    }
+
+    protected function getKitchenerOrders(int $paginate): ?LengthAwarePaginator
+    {
+        return Order::where('created_at', $this->getComparisonOperator(), $this->getDeadlineTime())
+            ->whereIn('status', $this->getAvailableStatuses())
+            ->orderBy('status')
+            ->orderBy('dinner_time')
+            ->orderBy('id')
+            ->paginate($paginate);
+    }
+
+    protected function updateBackURI(): string
+    {
+        return (session()->pull('order_edit_back_url') ?? url()->previous());
+    }
+
+    protected function orderUpdate(Order $order, Request $request, bool $client)
+    {
+        $dinnerTime = $client ? $request->dinner_time : $order->dinner_time;
+        $status = $client ? 1 : $request->status;
+        $addressId = $client ? $request->address_id : $order->address_id;
+
+        $order->status = $status;
+        $order->dinner_time = $dinnerTime;
+        $order->address_id = $addressId;
+        return $order->save();
     }
 }
