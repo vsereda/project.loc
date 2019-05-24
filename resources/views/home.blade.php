@@ -73,7 +73,15 @@
                             @endforeach
 
                             @auth
-                                <h4><a href="{{ route('products.index') }}">Оформить заказ</a></h4>
+{{--                                <h4><a href="{{ route('products.index') }}">Оформить заказ</a></h4>--}}
+                                    <hr>
+                                    <div class="p-b-xl">
+                                        <div class="btn-group pt-4">
+                                            <a href="{{ route('products.index') }}" class="btn btn-primary btn-lg mr-2">
+                                                Оформить заказ
+                                            </a>
+                                        </div>
+                                    </div>
                             @endauth
 
                             @guest

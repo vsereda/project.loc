@@ -45,11 +45,11 @@
                                     </select>
                                 </div>
 
-                                <div class="btn-group">
-                                    <button type="submit" class="btn btn-info">
+                                <div class="btn-group pt-5 p-b-xl">
+                                    <button type="submit" class="btn btn-info btn-lg">
                                         Подтвердить заказ
                                     </button>
-                                    <a href="{{ route('products.index') }}" class="btn btn-info">
+                                    <a href="{{ route('products.index') }}" class="btn btn-info btn-lg">
                                         Назад в меню
                                     </a>
                                 </div>

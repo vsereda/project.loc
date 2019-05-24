@@ -33,7 +33,7 @@ class DishServingTableSeeder extends Seeder
             DB::table('dish_serving')->insert([
                 'dish_id' => $dish->id,
                 'serving_id' => $serving->id,
-                'price' => rand(30, 300),
+                'price' => rand(40, 70),
             ]);
         }
     }
