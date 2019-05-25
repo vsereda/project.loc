@@ -11,7 +11,8 @@
             <div class=" qty col-sm-6 col-xs-12 col-sm-pull-6 flex-right">
                 <div class="qty-buttons">
                     <span class="plus" @click="increment">+</span>
-                    <input type="text" class="count" v-bind:class="{ 'active': isActive }"  :name="name" :id="id" value="0" v-model="counter" >
+                    <input type="text" class="count" v-bind:class="{ 'active': isActive }" :name="name" :id="id"
+                           value="0" v-model="counter">
                     <span class="minus" @click="decrement">-</span>
                 </div>
             </div>
@@ -48,12 +49,20 @@
         },
         watch: {
             counter: function (newCounter, oldCounter) {
-                if(newCounter !== 0){
+                if (newCounter != 0 && !isNaN(newCounter)) {
                     this.isActive = true
                     this.countPrice = this.price * newCounter;
+                    if (!isNaN(oldCounter)) {
+                        this.$store.state.counter -= this.price * oldCounter;
+                    }
+                    this.$store.state.counter += this.countPrice;
                 } else {
+                    // this.counter = 0
                     this.isActive = false
                     this.countPrice = 0
+                    if (!isNaN(oldCounter)) {
+                        this.$store.state.counter -= this.price * oldCounter;
+                    }
                 }
             }
         }
@@ -79,8 +88,8 @@
     }
 
     div .qty-buttons {
-        width: 90px;
-        padding: 5px 14px;
+        width: 175px;
+        padding: 5px 0 5px 14px;
         /*padding-left: auto;*/
         /*padding-right: auto;*/
         /*border: 1px solid green;*/
@@ -90,7 +99,7 @@
 
     @media (max-width: 768px) {
         div .qty-buttons {
-            width: 60px;
+            width: 175px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -141,8 +150,8 @@
         padding: 0 2px;
         min-width: 35px;
         text-align: center;
-        margin-left: 12px;
-        margin-right: 12px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     @media (max-width: 768px) {
@@ -158,9 +167,9 @@
         display: inline-block;
         vertical-align: top;
         color: #5ca5ff;
-        width: 60px;
-        height: 60px;
-        font: 54px/1 Arial, sans-serif;
+        width: 40px;
+        height: 40px;
+        font: 34px/1 Arial, sans-serif;
         text-align: center;
         border: 3px solid #5ca5ff;
         border-radius: 50%;
@@ -180,9 +189,9 @@
         display: inline-block;
         vertical-align: top;
         color: #5ca5ff;
-        width: 60px;
-        height: 60px;
-        font: 48px/1 Arial, sans-serif;
+        width: 40px;
+        height: 40px;
+        font: 28px/1 Arial, sans-serif;
         text-align: center;
         border: 3px solid #5ca5ff;
         border-radius: 50%;

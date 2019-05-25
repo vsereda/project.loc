@@ -20,22 +20,12 @@
 </li >
 @endrole
 @role('courier')
-{{--<li>--}}
-{{--    <a href="#">--}}
-{{--        Доставка--}}
-{{--    </a>--}}
-{{--</li>--}}
-@endrole
-
-@role('courier')
 <li>
     <a href="{{ route('delivery.index') }}">
         Доставка
     </a>
 </li>
 @endrole
-
-
 @role('kitchener|courier')
 <li>
     <a href="{{ route('orders.index') }}">
@@ -43,4 +33,3 @@
     </a>
 </li>
 @endrole
-

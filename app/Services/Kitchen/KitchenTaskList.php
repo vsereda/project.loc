@@ -31,10 +31,11 @@ class KitchenTaskList
     protected function getNotMadeOrders(int $dinnerTime = 0)
     {
         $dinnerTimeList = $dinnerTime ? [$dinnerTime] : [1, 2, 3];
-        return Order::where('execution', Carbon::now()->format('Y-m-d'))
+        return Order::with('orderDishServings.dishServing.dish')
+            ->with('orderDishServings.dishServing.serving')
+            ->where('execution', Carbon::now()->format('Y-m-d'))
             ->whereIn('status', [1])
             ->whereIn('dinner_time', $dinnerTimeList)
-            ->with(['orderDishServings'])
             ->get();
     }
 }

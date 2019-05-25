@@ -24,6 +24,8 @@ class OrderController extends Controller
 
     public function tasks()
     {
+//        dd(json_encode(KitchenTaskList::get(), JSON_UNESCAPED_UNICODE));
+
         if (Auth::user()->hasRole('kitchener')) {
             return view('kitchen.tasks')->with([
                 'page_title' => 'Задания',
@@ -93,6 +95,7 @@ class OrderController extends Controller
             'execution' => $execution,
         ]);
         KitchenODS::create($request, $order);
-        return redirect()->route('products.index')->withStatus(substr($execution, 0, -8) . ' заказ будет доставлен Вам в офис и Вы получите смс уведомление.');
+//        return redirect()->route('products.index')->withStatus(substr($execution, 0, -8) . ' заказ будет доставлен Вам в офис и Вы получите смс уведомление.');
+        return view('user.result')->withStatus(substr($execution, 0, -8) . ' заказ будет доставлен Вам в офис и Вы получите смс уведомление.');
     }
 }

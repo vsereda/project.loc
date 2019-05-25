@@ -30,6 +30,7 @@ Route::group(['prefix' => 'employee'], function () {
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@show')->name('home.show');
+Route::resource('dishes', 'DishController')->only(['show']);
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('products', 'ProductController')->only(['index']);

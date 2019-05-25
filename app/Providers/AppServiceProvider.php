@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 
@@ -26,6 +27,12 @@ class AppServiceProvider extends ServiceProvider
                     && (now() >= Carbon::today()->addHours(config('deadline.deadline')))
                 )
             );
+        });
+
+        DB::listen(function ($query) {
+            // dump($query->sql);
+            // $query->bindings
+            // $query->time
         });
     }
 

@@ -9,7 +9,7 @@ class OrderDishServingTableSeeder extends Seeder
 {
     // Order count and dishServing count for each Order
     const ORDERS = 120;
-    const DISHSERVINGS = 5;
+    const DISHSERVINGS = 3;
 
     // Those variables are using for DishServings cache
     protected $dishServings;
@@ -50,6 +50,7 @@ class OrderDishServingTableSeeder extends Seeder
         for ($i = 0; $i < $count; $i++) {
 
             // Getting next collection item from available DSs
+            $this->availableDSs = $this->availableDSs->shuffle();
             $this->current = $this->availableDSs->shift();
 
             // Attaching DishServing to Order

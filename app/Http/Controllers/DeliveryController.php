@@ -19,7 +19,6 @@ class DeliveryController extends Controller
      */
     public function index()
     {
-
         $notices = Order::with('user.address')
             ->where('execution', Carbon::now()->format('Y-m-d'))
             ->where('sms', 0)

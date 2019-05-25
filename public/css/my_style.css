@@ -601,4 +601,8 @@ input #dish_servings .count{
     width: 100px;
 }
 
-html { overflow-x: hidden; }
+/*html { overflow-x: hidden; }*/
+
+#dinner_time {
+    width: 300px;
+}

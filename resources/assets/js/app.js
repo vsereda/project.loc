@@ -6,6 +6,7 @@
  */
 
 require('./bootstrap');
+import store from './store'
 
 window.Vue = require('vue');
 
@@ -17,7 +18,10 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('plus-minus-component', require('./components/PlusMinusComponent.vue'));
+Vue.component('counter', require('./components/Counter.vue'));
+Vue.component('task-list', require('./components/KitchenTaskList.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    store
 });

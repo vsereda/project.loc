@@ -1,191 +1,33 @@
 @extends('layouts.app')
-
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-
-    @isset($kitchenTaskList1)
-        <table class="table table-bordered">
-            <caption>
-                <h4>
-                    Приговтовить к 1-му обеду:
-                </h4>
-            </caption>
-            <thead>
-                <tr>
-                    <th scope="col">
-                        Название
-                    </th>
-                    <th scope="col">
-                        Количество
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-            @if($kitchenTaskList1->count())
-                @foreach($kitchenTaskList1 as $dish => $dishCollection)
-                    <tr>
-                        <th >
-                            {{ $dish }}
-                        </th>
-                        <td >
-                            {{
-                                number_format($dishCollection->map(function ($item, $key){
-                                    return preg_replace("/[^0-9]/", '', $key) * $item;
-                                })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
-                            }}
-                        </td>
-                    </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="2">
-                        пусто
-                    </td>
-                </tr>
-            @endif
-            </tbody>
-        </table>
-    @endisset
-
-    @isset($kitchenTaskList2)
-        <table class="table table-bordered">
-            <caption>
-                <h4>
-                    Приговтовить ко 2-му обеду:
-                </h4>
-            </caption>
-            <thead>
-            <tr>
-                <th scope="col">
-                    Название
-                </th>
-                <th scope="col">
-                    Количество
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            @if($kitchenTaskList2->count())
-                @foreach($kitchenTaskList2 as $dish => $dishCollection)
-                    <tr>
-                        <th >
-                            {{ $dish }}
-                        </th>
-                        <td >
-                            {{
-                                number_format($dishCollection->map(function ($item, $key){
-                                    return preg_replace("/[^0-9]/", '', $key) * $item;
-                                })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
-                            }}
-                        </td>
-                    </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="2">
-                        пусто
-                    </td>
-                </tr>
-            @endif
-            </tbody>
-        </table>
-    @endisset
-
-    @isset($kitchenTaskList3)
-        <table class="table table-bordered">
-            <caption>
-                <h4>
-                    Приговтовить к 3-му обеду:
-                </h4>
-            </caption>
-            <thead>
-            <tr>
-                <th scope="col">
-                    Название
-                </th>
-                <th scope="col">
-                    Количество
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            @if($kitchenTaskList3->count())
-                @foreach($kitchenTaskList3 as $dish => $dishCollection)
-                    <tr>
-                        <th >
-                            {{ $dish }}
-                        </th>
-                        <td >
-                            {{
-                                number_format($dishCollection->map(function ($item, $key){
-                                    return preg_replace("/[^0-9]/", '', $key) * $item;
-                                })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
-                            }}
-                        </td>
-                    </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="2">
-                        пусто
-                    </td>
-                </tr>
-            @endif
-            </tbody>
-        </table>
-    @endisset
-
-    @isset($kitchenTaskList)
-        <table class="table table-bordered">
-            <caption>
-                <h4>
-                    Приговтовить на весь день:
-                </h4>
-            </caption>
-            <thead>
-            <tr>
-                <th scope="col">
-                    Название
-                </th>
-                <th scope="col">
-                    Количество
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            @if($kitchenTaskList->count())
-                @foreach($kitchenTaskList as $dish => $dishCollection)
-                    <tr>
-                        <th >
-                            {{ $dish }}
-                        </th>
-                        <td >
-                            {{
-                                number_format($dishCollection->map(function ($item, $key){
-                                    return preg_replace("/[^0-9]/", '', $key) * $item;
-                                })->sum(), 0, '\'', ' ') . ' '. preg_replace("/[0-9]/", '', $dishCollection->keys()->first())
-                            }}
-                        </td>
-                    </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="2">
-                        пусто
-                    </td>
-                </tr>
-            @endif
-            </tbody>
-        </table>
-    @endisset
-                    </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <div class="panel-body">
+        @isset($kitchenTaskList1)
+            <task-list
+                task-list="{{ json_encode($kitchenTaskList1, JSON_UNESCAPED_UNICODE) }}"
+                title="Приговтовить к 1-му обеду:"
+            >
+            </task-list>
+        @endisset
+        @isset($kitchenTaskList2)
+            <task-list
+                    task-list="{{ json_encode($kitchenTaskList2, JSON_UNESCAPED_UNICODE) }}"
+                    title="Приговтовить ко 2-му обеду:"
+            >
+            </task-list>
+        @endisset
+        @isset($kitchenTaskList3)
+            <task-list
+                task-list="{{ json_encode($kitchenTaskList3, JSON_UNESCAPED_UNICODE) }}"
+                title="Приговтовить к 3-му обеду:"
+            >
+            </task-list>
+        @endisset
+        @isset($kitchenTaskList)
+            <task-list
+                task-list="{{ json_encode($kitchenTaskList, JSON_UNESCAPED_UNICODE) }}"
+                title="Приговтовить на весь день:"
+            >
+            </task-list>
+        @endisset
+    </div>
 @endsection

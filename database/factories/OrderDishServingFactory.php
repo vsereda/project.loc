@@ -5,6 +5,6 @@ use Faker\Generator as Faker;
 
 $factory->define(App\OrderDishServing::class, function () {
     return [
-        'count' => rand(1, 20),
+        'count' => rand(1, 4),
     ];
 });
