@@ -7,6 +7,7 @@ use App\Http\Requests\DeliveryStoreRequest;
 use App\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Mobizon\MobizonApi;
 use SendSMS;
 
@@ -19,6 +20,12 @@ class DeliveryController extends Controller
      */
     public function index()
     {
+        // Custom Sorting Collection by key method
+        Collection::macro('ksort', function(){
+            ksort($this->items);
+            return $this;
+        });
+
         $notices = Order::with('user.address')
             ->where('execution', Carbon::now()->format('Y-m-d'))
             ->where('sms', 0)
@@ -34,8 +41,8 @@ class DeliveryController extends Controller
                     ->groupBy('address_id');
                 return ['users' => $users, 'addresses' => $addresses];
             })
-            ->sort()
-            ->reverse();
+            ->ksort()
+        ;
         $smsCount = floor(SendSMS::getBalance() / abs(config('mobizon.mobizonprice')));
         return view('delivery.index')->with(['notices' => $notices, 'smsCount' => $smsCount]);
     }
