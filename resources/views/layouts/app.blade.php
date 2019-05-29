@@ -15,6 +15,9 @@
     <link href="{{ asset('css/app_my.css') }}" rel="stylesheet">
     <link href="{{ asset('css/my_style.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Ubuntu"/>
+
+    <!-- Don't cache -->
+    <meta http-equiv="Cache-Control" content="no-cache">
 </head>
 <body>
 <div id="app">

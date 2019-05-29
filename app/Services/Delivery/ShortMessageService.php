@@ -47,8 +47,7 @@ class ShortMessageService
                         array(
                             'id' => $campaignId,
                             'recipients' => $recipientsList
-                        )) && (!in_array($api->getCode(), array(0, 98, 99)) || !$api->hasData())
-                ) {
+                        )) && (!in_array($api->getCode(), array(0, 98, 99)) || !$api->hasData())) {
                     return ['error' => 'Произошла ошибка при добавлении получателей'];
                 }
             }
@@ -75,7 +74,7 @@ class ShortMessageService
             } else {
                 return false;
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }

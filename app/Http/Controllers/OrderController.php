@@ -17,44 +17,49 @@ use KitchenODS;
 use KitchenDS;
 use TotalCost;
 use KitchenOrders;
+use CourierOrders;
 
 class OrderController extends Controller
 {
     const PAGINATE = 10;
 
-    public function tasks()
-    {
-//        dd(json_encode(KitchenTaskList::get(), JSON_UNESCAPED_UNICODE));
-
-        if (Auth::user()->hasRole('kitchener')) {
-            return view('kitchen.tasks')->with([
-                'page_title' => 'Задания',
-                'kitchenTaskList' => KitchenTaskList::get(),
-                'kitchenTaskList1' => KitchenTaskList::get(1),
-                'kitchenTaskList2' => KitchenTaskList::get(2),
-                'kitchenTaskList3' => KitchenTaskList::get(3),
-            ]);
-        } else {
-            return redirect()->route('home');
-        }
-    }
-
     /**
-     * Display listing of orders.
+     * Display listing of kitchen tasks.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function tasks()
     {
-        if (Auth::user()->hasRole('kitchener|courier')) {
-            $pageTitle = 'Заказы на сегодня';
-            $view = 'kitchen.orders';
-        } else {
-            return redirect()->route('home');
-        }
-        return view($view)->with([
-            'orders' => KitchenOrders::get(self::PAGINATE),
-            'page_title' => $pageTitle,
+        return view('kitchen.tasks')->with([
+            'page_title' => 'Задания',
+            'kitchenTaskList' => KitchenTaskList::get(),
+            'kitchenTaskList1' => KitchenTaskList::get(1),
+            'kitchenTaskList2' => KitchenTaskList::get(2),
+            'kitchenTaskList3' => KitchenTaskList::get(3),
+        ]);
+    }
+
+    /**
+     * Display listing of kitchen orders.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function kitchen()
+    {
+        return view('kitchen.orders')->with([
+            'orders' => KitchenOrders::get(),
+        ]);
+    }
+
+    /**
+     * Display listing of delivery orders.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function delivery()
+    {
+        return view('delivery.orders')->with([
+            'orders' => CourierOrders::get(self::PAGINATE),
         ]);
     }
 
@@ -63,7 +68,8 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(CreateOrderRequest $request)
+    public
+    function create(CreateOrderRequest $request)
     {
         $dsString = KitchenDS::dsString($request);
         if (count($dsString->keys()) && !($dishservings = KitchenDS::get($dsString->keys()))->contains(null)) {

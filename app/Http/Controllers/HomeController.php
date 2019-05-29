@@ -13,8 +13,10 @@ class HomeController extends Controller
         switch (true) {
             case (!Auth::user()):
                 return redirect()->route('home.show');
-            case (Auth::user()->hasRole('kitchener|courier')):
-                return redirect()->route('orders.index');
+            case (Auth::user()->hasRole('kitchener')):
+                return redirect()->route('orders.kitchen');
+            case (Auth::user()->hasRole('courier')):
+                return redirect()->route('orders.delivery');
             case (Auth::user()->hasRole('user')):
                 return redirect()->route('products.index');
             default:

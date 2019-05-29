@@ -14,22 +14,27 @@
 @endrole
 @role('kitchener')
 <li>
-    <a href="{{ route('order.tasks') }}">
-        Задания
+    <a href="{{ route('orders.tasks') }}">
+        Приготовить
     </a>
 </li >
 @endrole
 @role('courier')
 <li>
     <a href="{{ route('delivery.index') }}">
-        Доставка
+        Оповещения
     </a>
 </li>
 @endrole
 @role('kitchener|courier')
 <li>
-    <a href="{{ route('orders.index') }}">
-        Заказы
+    <a href="{{ route('orders.kitchen') }}">
+        По адресам
+    </a>
+</li>
+<li>
+    <a href="{{ route('orders.delivery') }}">
+        По заказам
     </a>
 </li>
 @endrole

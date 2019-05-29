@@ -1,5 +1,7 @@
 <?php
 
+use App\Facades\Kitchen\KitchenOrders;
+
 return [
 
     /*
@@ -176,6 +178,8 @@ return [
 
         // Delivery
         App\Providers\Delivery\ShortMessageServiceProvider::class,
+        App\Providers\Delivery\CourierOrdersServiceProvider::class,
+
 
         /*
          * Package Service Providers...
@@ -250,7 +254,8 @@ return [
         'TotalCost' => App\Facades\Client\TotalCost::class,
 
         // Delivery
-        'SendSMS' => App\Facades\Delivery\ShortMessageService::class
+        'SendSMS' => App\Facades\Delivery\ShortMessageService::class,
+        'CourierOrders' => App\Facades\Delivery\CourierOrders::class,
 
     ],
 

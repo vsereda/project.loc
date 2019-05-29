@@ -28,16 +28,13 @@ class DeliveryController extends Controller
                 $addresses = $item->map(function ($item, $key) {
                     return $item->user->address;
                 })->unique()->keyBy('id');
-
                 $users = $item->map(function ($item, $key) {
                     return $item->user;
                 })->unique()
                     ->groupBy('address_id');
-
                 return ['users' => $users, 'addresses' => $addresses];
             })
             ->reverse();
-
         $smsCount = floor(SendSMS::getBalance() / abs(config('mobizon.mobizonprice')));
         return view('delivery.index')->with(['notices' => $notices, 'smsCount' => $smsCount]);
     }
@@ -66,20 +63,14 @@ class DeliveryController extends Controller
             ->whereHas('user', function ($query) {
                 global $request;
                 $query->where('address_id', $request->address_id);
-            })//            ->get()
-        ;
-
+            });
         $users = $orders->get()->map(function ($item, $key) {
             return $item->user;
         })->unique();
-
         $phones = $users->map(function ($item, $key) {
             return 38 . str_pad($item->phone, 10, '0', STR_PAD_LEFT);
         });
-//dd($phones);
-        if ($resultError = SendSMS::send($phones, 'Ваш суп прибыл.')['error']) {
-//        if ($resultError = $this->sendSMS($phones, 'Ваш суп прибыл.')['error']) {
-
+        if ($resultError = SendSMS::send($phones, config('mobizon.message'))['error']) {
             return redirect()->route('orders.index')->withError($resultError);
         } else {
             $orders->update(['sms' => 1]);
