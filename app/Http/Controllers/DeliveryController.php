@@ -34,6 +34,7 @@ class DeliveryController extends Controller
                     ->groupBy('address_id');
                 return ['users' => $users, 'addresses' => $addresses];
             })
+            ->sort()
             ->reverse();
         $smsCount = floor(SendSMS::getBalance() / abs(config('mobizon.mobizonprice')));
         return view('delivery.index')->with(['notices' => $notices, 'smsCount' => $smsCount]);
@@ -71,10 +72,10 @@ class DeliveryController extends Controller
             return 38 . str_pad($item->phone, 10, '0', STR_PAD_LEFT);
         });
         if ($resultError = SendSMS::send($phones, config('mobizon.message'))['error']) {
-            return redirect()->route('orders.index')->withError($resultError);
+            return redirect()->route('orders.delivery')->withError($resultError);
         } else {
             $orders->update(['sms' => 1]);
-            return redirect()->route('orders.index')->withStatus('Сообщение о доставке по адресу ' . Address::find($request->address_id)->description . ' отправлено. ');
+            return redirect()->route('orders.delivery')->withStatus('Сообщение о доставке по адресу ' . Address::find($request->address_id)->description . ' отправлено. ');
         }
     }
 
