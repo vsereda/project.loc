@@ -8,7 +8,7 @@
 
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 html {
-    font-family: ubuntu /*sans-serif*/;
+    font-family: ubuntu, sans-serif;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%
 }
@@ -107,7 +107,7 @@ pre {
 }
 
 code, kbd, pre, samp {
-    font-family: ubuntu /*monospace,monospace*/;
+    font-family: ubuntu, monospace,monospace;
     font-size: 1em
 }
 
@@ -272,7 +272,7 @@ td, th {
 }
 
 @font-face {
-    font-family: ubuntu/*Glyphicons Halflings*/
+    font-family: ubuntu, Glyphicons Halflings
 ;
     src: url(/fonts/vendor/bootstrap-sass/bootstrap/glyphicons-halflings-regular.eot?f4769f9bdb7466be65088239c12046d1);
     src: url(/fonts/vendor/bootstrap-sass/bootstrap/glyphicons-halflings-regular.eot?f4769f9bdb7466be65088239c12046d1?#iefix) format("embedded-opentype"), url(/fonts/vendor/bootstrap-sass/bootstrap/glyphicons-halflings-regular.woff2?448c34a56d699c29117adc64c43affeb) format("woff2"), url(/fonts/vendor/bootstrap-sass/bootstrap/glyphicons-halflings-regular.woff?fa2772327f55d8198301fdb8bcfc8158) format("woff"), url(/fonts/vendor/bootstrap-sass/bootstrap/glyphicons-halflings-regular.ttf?e18bbf611f2a2e43afc071aa2f4e1512) format("truetype"), url(/fonts/vendor/bootstrap-sass/bootstrap/glyphicons-halflings-regular.svg?89889688147bd7575d6327160d64e760#glyphicons_halflingsregular) format("svg")
@@ -282,7 +282,7 @@ td, th {
     position: relative;
     top: 1px;
     display: inline-block;
-    font-family: ubuntu /*Glyphicons Halflings*/;
+    font-family: ubuntu, Glyphicons Halflings;
     font-style: normal;
     font-weight: 400;
     line-height: 1;
@@ -1337,7 +1337,7 @@ div {
 }
 
 body {
-    font-family: ubuntu /*Raleway,sans-serif*/;
+    font-family: ubuntu, Raleway,sans-serif;
     font-size: 18px;
     line-height: 1.6;
     color: #636b6f;
@@ -1345,7 +1345,7 @@ body {
 }
 
 button, input, select, textarea {
-    font-family: ubuntu /*inherit*/;
+    font-family: ubuntu, inherit;
     font-size: inherit;
     line-height: inherit
 }
@@ -1435,7 +1435,7 @@ hr {
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-    font-family: ubuntu /*inherit*/;
+    font-family: ubuntu, inherit;
     font-weight: 500;
     line-height: 1.1;
     color: inherit
@@ -1760,7 +1760,7 @@ address {
 }
 
 code, kbd, pre, samp {
-    font-family: ubuntu /*Menlo,Monaco,Consolas,Courier New,monospace*/
+    font-family: ubuntu, Menlo,Monaco,Consolas,Courier New,monospace
 }
 
 code {
@@ -6355,7 +6355,7 @@ button.close {
     position: absolute;
     z-index: 1070;
     display: block;
-    font-family: ubuntu /*Raleway,sans-serif*/;
+    font-family: ubuntu, Raleway,sans-serif;
     font-style: normal;
     font-weight: 400;
     letter-spacing: normal;
@@ -6488,7 +6488,7 @@ button.close {
     display: none;
     max-width: 276px;
     padding: 1px;
-    font-family: ubuntu /*Raleway,sans-serif*/;
+    font-family: ubuntu, Raleway,sans-serif;
     font-style: normal;
     font-weight: 400;
     letter-spacing: normal;
@@ -6777,7 +6777,7 @@ button.close {
     width: 20px;
     height: 20px;
     line-height: 1;
-    font-family: ubuntu /*serif*/
+    font-family: ubuntu, serif
 }
 
 .carousel-control .icon-prev:before {
