@@ -9,7 +9,7 @@
         <p> {{ $dish->description }} </p>
         <p><strong>Состав: </strong>{{ $dish->composition }} </p>
         <div class="btn-group pt-4">
-            <a href="{{ url()->previous() }}" class="btn btn-info btn-lg">Вернуться назад</a>
+            <a href="{{ url()->previous() }}" class="btn btn-link btn-lg">Вернуться назад</a>
         </div>
     </div>
 @endsection
