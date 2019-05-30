@@ -141,6 +141,7 @@
 
 
     .qty .count {
+        border: 0;
         /*color: #000;*/
         display: inline-block;
         vertical-align: top;
@@ -152,6 +153,7 @@
         text-align: center;
         margin-left: auto;
         margin-right: auto;
+        width: 2%;
     }
 
     @media (max-width: 768px) {
