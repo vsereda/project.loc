@@ -12,27 +12,33 @@
         <hr>
         @if(isset($notices) && $notices->count())
             @foreach($notices as $dinnerTime => $collectionNotices)
-                <h4>Время доставки №{{ $dinnerTime }}:</h4>
-                @foreach($collectionNotices['users'] as $key => $users)
-                    <div class="form-group">
-                        <form class="form-horizontal" method="POST" action="{{ route('delivery.store') }}">
-                            {{ csrf_field() }}
-                            <input type="hidden" name="dinner_time" value="{{ $dinnerTime }}">
-                            <input type="hidden" name="address_id" value="{{ $key }}">
-                            <button type="submit" class="btn btn-success btn-lg m-b-md">
-                                <small>
-                                    {{ $collectionNotices['addresses'][$key]->description }}
-                                </small>
-                                <br>
-                                <small>
-                                    <strong>
-                                        ({{ $users->count() }} SMS)
-                                    </strong>
-                                </small>
-                            </button>
-                        </form>
-                    </div>
-                @endforeach
+                <div class="col-xs-12">
+                    <h4>
+                        Время доставки №{{ $dinnerTime }}:
+                    </h4>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+                    @foreach($collectionNotices['users'] as $key => $users)
+                        <div class="form-group ">
+                            <form class="form-horizontal" method="POST" action="{{ route('delivery.store') }}">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="dinner_time" value="{{ $dinnerTime }}">
+                                <input type="hidden" name="address_id" value="{{ $key }}">
+                                <button type="submit" class="btn btn-success btn-lg m-b-md" style="width: 100%;">
+                                    <small>
+                                        {{ $collectionNotices['addresses'][$key]->description }}
+                                    </small>
+                                    <br>
+                                    <small>
+                                        <strong>
+                                            ({{ $users->count() }} SMS)
+                                        </strong>
+                                    </small>
+                                </button>
+                            </form>
+                        </div>
+                    @endforeach
+                </div>
             @endforeach
         @else
             <hr>
