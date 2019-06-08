@@ -29,7 +29,7 @@
                                 </th>
                             @endrole
                             <th scope="col">
-                                Блюдо
+                                Список супов
                             </th>
                         </tr>
                     </thead>
