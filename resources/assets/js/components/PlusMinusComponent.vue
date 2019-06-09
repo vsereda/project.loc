@@ -42,6 +42,9 @@
                 }
             },
             decrement() {
+                // if(isNaN(this.counter)) {
+                //     this.counter = 0;
+                // }
                 if (this.counter !== 0) {
                     this.counter--
                 }
@@ -49,6 +52,12 @@
         },
         watch: {
             counter: function (newCounter, oldCounter) {
+                if(isNaN(newCounter)) {
+                    this.counter = 0;
+                } else
+                    if(newCounter > 9){
+                    this.counter = 9;
+                }
                 if (newCounter != 0 && !isNaN(newCounter)) {
                     this.isActive = true
                     this.countPrice = this.price * newCounter;
@@ -64,6 +73,7 @@
                         this.$store.state.counter -= this.price * oldCounter;
                     }
                 }
+                this.counter = Number(this.counter)
             }
         }
     }

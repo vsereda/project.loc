@@ -46261,6 +46261,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         decrement: function decrement() {
+            // if(isNaN(this.counter)) {
+            //     this.counter = 0;
+            // }
             if (this.counter !== 0) {
                 this.counter--;
             }
@@ -46268,6 +46271,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     watch: {
         counter: function counter(newCounter, oldCounter) {
+            if (isNaN(newCounter)) {
+                this.counter = 0;
+            } else if (newCounter > 9) {
+                this.counter = 9;
+            }
             if (newCounter != 0 && !isNaN(newCounter)) {
                 this.isActive = true;
                 this.countPrice = this.price * newCounter;
@@ -46283,6 +46291,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     this.$store.state.counter -= this.price * oldCounter;
                 }
             }
+            this.counter = Number(this.counter);
         }
     }
 });
