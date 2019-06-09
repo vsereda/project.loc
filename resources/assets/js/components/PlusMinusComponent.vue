@@ -53,10 +53,10 @@
         watch: {
             counter: function (newCounter, oldCounter) {
                 if(isNaN(newCounter)) {
-                    this.counter = 0;
+                    this.counter = oldCounter;
                 } else
                     if(newCounter > 9){
-                    this.counter = 9;
+                    this.counter = newCounter % 10;
                 }
                 if (newCounter != 0 && !isNaN(newCounter)) {
                     this.isActive = true
