@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class LoginUserController extends Controller
 {
@@ -58,7 +59,7 @@ class LoginUserController extends Controller
 
         if (!$user || !($user->hasRole('user'))) {
             return redirect()->back()->withInput($request->only('login'))->withErrors([
-                'login' => 'Не правильный логин или пароль',
+                'login' => 'Не правильный ник',
             ]);
         }
 
