@@ -12,8 +12,8 @@
 */
 
 //Test routes
-Route::get('/test1', 'TestController@test1');
-Route::get('/test2', 'TestController@test2');
+//Route::get('/test1', 'TestController@test1');
+//Route::get('/test2', 'TestController@test2');
 
 //Auth routes
 Auth::routes();
