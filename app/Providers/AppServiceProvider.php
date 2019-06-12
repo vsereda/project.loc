@@ -23,8 +23,8 @@ class AppServiceProvider extends ServiceProvider
                         || (now() >= Carbon::today()->addHours(config('deadline.deadline'))
                             && $order->created_at > Carbon::today()->addHours(config('deadline.deadline')))
                     ))
-                || (Auth::user()->hasRole('kitchener')
-                    && (now() >= Carbon::today()->addHours(config('deadline.deadline')))
+                || (Auth::user()->hasRole('courier')
+                    //&& (now() >= Carbon::today()->addHours(config('deadline.deadline')))
                 )
             );
         });

@@ -34,7 +34,7 @@ class KitchenTaskList
         return Order::with('orderDishServings.dishServing.dish')
             ->with('orderDishServings.dishServing.serving')
             ->where('execution', Carbon::now()->format('Y-m-d'))
-            ->whereIn('status', [1])
+//            ->whereIn('status', [1])
             ->whereIn('dinner_time', $dinnerTimeList)
             ->get();
     }

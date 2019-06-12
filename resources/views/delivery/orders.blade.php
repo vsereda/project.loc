@@ -14,6 +14,11 @@
                             <th scope="col">
                                 № Заказа
                             </th>
+                            @role('courier')
+                                <th scope="col">
+                                    Сатус
+                                </th>
+                            @endrole
                             <th scope="col">
                                 Заказчик
                             </th>
@@ -50,11 +55,30 @@
                                     </th>
                                     <td rowspan="{{ $order->orderDishServings->count() }}">
                                         @editable_order($order)
-                                            {{ $order->id }}
+                                            <a href="{{ route('orders.edit', $order->id) }}"> {{ $order->id }} </a>
                                         @else
                                             {{ $order->id }}
                                         @endeditable_order
                                     </td>
+                                    @role('courier')
+                                        <td rowspan="{{ $order->orderDishServings->count() }}">
+                                            @if($order->status == 1)
+                                                не доставлен
+                                            @endif
+                                            @if($order->status == 2)
+                                                реализован
+                                            @endif
+                                            @if($order->status == 3)
+                                                клиент отсутствует
+                                            @endif
+                                            @if($order->status == 4)
+                                                клиент отказался
+                                            @endif
+                                            @if($order->status == 5)
+                                                нет связи с клиентом
+                                            @endif
+                                        </td>
+                                    @endrole
                                     <td rowspan="{{ $order->orderDishServings->count() }}">
                                         {{ $order->user->name }}
                                     </td>
@@ -104,7 +128,7 @@
                                     </td>
                                 @endrole
                                 @role('courier')
-                                    <td colspan="7">
+                                    <td colspan="8">
                                         Нет заказов
                                     </td>
                                 @endrole

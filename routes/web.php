@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('orders/create', 'OrderController@create')->middleware(['role:user'])->name('orders.create');
 
         // Absent resource methods in orders. May be in future these will be used. If it is, not forget role middlewares.
-        Route::resource('orders', 'OrderController')->except(['index', 'create', 'show', 'edit', 'update', 'destroy']);
+        Route::resource('orders', 'OrderController')->except(['index', 'create', 'show', 'destroy'])->middleware('role:courier');
 
     Route::resource('delivery', 'DeliveryController')->only(['index', 'store'])->middleware(['role:courier']);
 });
